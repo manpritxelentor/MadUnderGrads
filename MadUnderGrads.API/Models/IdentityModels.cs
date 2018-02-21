@@ -24,7 +24,7 @@ namespace MadUnderGrads.API.Models
         public string LastName { get; set; }
         public string PasswordHint { get; set; }
         public string PasswordReponse { get; set; }
-        public DateTime DateOfBirth { get; set; }
+        public DateTime? DateOfBirth { get; set; }
 
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager, string authenticationType)
         {

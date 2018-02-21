@@ -7,6 +7,8 @@ using Microsoft.Owin.Security.OAuth;
 using Newtonsoft.Json.Serialization;
 using System.Web.Http.ExceptionHandling;
 using MadUnderGrads.API.Filters;
+using System.Web.ModelBinding;
+using FluentValidation.WebApi;
 
 namespace MadUnderGrads.API
 {
@@ -29,6 +31,9 @@ namespace MadUnderGrads.API
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
+
+            //Tell Web API to use Fluentvalidation
+            FluentValidationModelValidatorProvider.Configure(config);
         }
     }
 }

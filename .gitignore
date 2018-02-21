@@ -6,3 +6,5 @@
 /MadUnderGrads.API/bin/Release
 /MadUnderGrads.API/Logs
 /MadUnderGrads.API/obj
+/MadUnderGrads.API/bin
+/packages

@@ -43,6 +43,9 @@ namespace MadUnderGrads.API.Controllers
         // POST api/values
         public IHttpActionResult Post([FromBody]ProductTextBookDataModel model)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
             bool result = _productTextBookService.Insert(model);
             return Ok(result);
         }
@@ -50,6 +53,9 @@ namespace MadUnderGrads.API.Controllers
         // PUT api/values/5
         public IHttpActionResult Put(int id, [FromBody]ProductTextBookDataModel model)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
             bool result = _productTextBookService.Update(id, model);
             return Ok(result);
         }

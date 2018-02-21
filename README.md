@@ -1,29 +1,40 @@
 # README #
 
-This README would normally document whatever steps are necessary to get your application up and running.
+API for MadUnderGrads
 
-### What is this repository for? ###
+### Which are the api calls? ###
 
-* Quick summary
-* Version
-* [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
-
-### How do I get set up? ###
-
-* Summary of set up
-* Configuration
-* Dependencies
-* Database configuration
-* How to run tests
-* Deployment instructions
-
-### Contribution guidelines ###
-
-* Writing tests
-* Code review
-* Other guidelines
-
-### Who do I talk to? ###
-
-* Repo owner or admin
-* Other community or team contact
+# ProductTextbook #
+* Get: http://localhost:55428/api/ProductTextbook
+* Get: http://localhost:55428/api/ProductTextbook/1
+* Post: http://localhost:55428/api/ProductTextbook
+   Parameter: 
+   {
+		"id": 0,
+        "categoryId": 1,
+        "description": "Second Desc",
+        "email": "abc@xyz.com",
+        "phoneNumber": "12123123",
+        "isNegotiable": true,
+        "price": 22,
+        "isbn": "NNHHJH",
+        "title": "Second Book",
+        "notesIncluded": true,
+        "condition": "New"
+	}
+* PUT: http://localhost:55428/api/ProductTextbook/1
+	Parameter: 
+    {
+		"id": 0,
+        "categoryId": 1,
+        "description": "Second Desc",
+        "email": "abc@xyz.com",
+        "phoneNumber": "12123123",
+        "isNegotiable": true,
+        "price": 22,
+        "isbn": "NNHHJH",
+        "title": "Second Book",
+        "notesIncluded": true,
+        "condition": "New"
+	}
+* Delete: http://localhost:55428/api/ProductTextbook/2

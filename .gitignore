@@ -1,0 +1,8 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/MadUnderGrads.API/bin/Release/PublishOutput/bin
+/MadUnderGrads.API/bin/Release
+/MadUnderGrads.API/Logs
+/MadUnderGrads.API/obj

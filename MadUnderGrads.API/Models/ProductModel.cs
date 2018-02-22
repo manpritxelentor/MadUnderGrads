@@ -23,5 +23,9 @@ namespace MadUnderGrads.API.Models
 
         public virtual CategoryModel Category { get; set; }
         public virtual ProductTextbookModel ProductTextbooks { get; set; }
+        public virtual ProductApparelModel ProductApparels { get; set; }
+        public virtual ProductElectronicsModel ProductElectronics { get; set; }
+        public virtual ProductFurnitureModel ProductFurniture { get; set; }
+        public virtual ProductMisellanousModel ProductMisellanous { get; set; }
     }
 }

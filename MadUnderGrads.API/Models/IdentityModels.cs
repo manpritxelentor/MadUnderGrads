@@ -56,6 +56,10 @@ namespace MadUnderGrads.API.Models
         {
             modelBuilder.Configurations.Add(entityTypeConfiguration: new CategoryModelMap());
             modelBuilder.Configurations.Add(entityTypeConfiguration: new ProductModelMap());
+            modelBuilder.Configurations.Add(entityTypeConfiguration: new ProductApparelModelMap());
+            modelBuilder.Configurations.Add(entityTypeConfiguration: new ProductElectronicsModelMap());
+            modelBuilder.Configurations.Add(entityTypeConfiguration: new ProductFurnitureModelMap());
+            modelBuilder.Configurations.Add(entityTypeConfiguration: new ProductMisellanousModelMap());
             modelBuilder.Configurations.Add(entityTypeConfiguration: new ProductTextbookModelMap());
 
             base.OnModelCreating(modelBuilder);
@@ -63,9 +67,6 @@ namespace MadUnderGrads.API.Models
         }
 
         public DbSet<CategoryModel> Categories { get; set; }
-        public DbSet<ProductModel> Products { get; set; }
-        public DbSet<ProductTextbookModel> ProductTextBooks { get; set; }
-
 
         public IQueryable<T> Entities<T>() where T : IBaseEntity
         {

@@ -6,6 +6,8 @@ using Microsoft.Owin.Security.OAuth;
 using Owin;
 using MadUnderGrads.API.Providers;
 using MadUnderGrads.API.Models;
+using Microsoft.Owin.Security.Google;
+using System.Configuration;
 
 namespace MadUnderGrads.API
 {
@@ -53,15 +55,15 @@ namespace MadUnderGrads.API
             //    consumerKey: "",
             //    consumerSecret: "");
 
-            //app.UseFacebookAuthentication(
-            //    appId: "",
-            //    appSecret: "");
+            app.UseFacebookAuthentication(
+                appId: ConfigurationManager.AppSettings["FacebookAppId"],
+                appSecret: ConfigurationManager.AppSettings["FacebookSecret"]);
 
-            //app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
-            //{
-            //    ClientId = "",
-            //    ClientSecret = ""
-            //});
+            app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
+            {
+                ClientId = ConfigurationManager.AppSettings["GoogleClientId"],
+                ClientSecret = ConfigurationManager.AppSettings["GoogleClientSecret"]
+            });
         }
     }
 }

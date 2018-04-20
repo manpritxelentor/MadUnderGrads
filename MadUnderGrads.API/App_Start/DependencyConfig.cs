@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using Autofac.Integration.WebApi;
+using FluentValidation.WebApi;
 using MadUnderGrads.API.Models;
 using MadUnderGrads.API.Repository;
 using MadUnderGrads.API.Service;
@@ -10,6 +11,7 @@ using System.Linq;
 using System.Reflection;
 using System.Web;
 using System.Web.Http;
+using System.Web.ModelBinding;
 
 namespace MadUnderGrads.API.App_Start
 {
@@ -63,9 +65,14 @@ namespace MadUnderGrads.API.App_Start
                 .As<IIdentityHelper>()
                 .InstancePerLifetimeScope();
 
+            //Validation module registration
+            builder.RegisterModule(new ValidationModule());
+
             // Set the dependency resolver to be Autofac.
             var container = builder.Build();
             config.DependencyResolver = new AutofacWebApiDependencyResolver(container);
+
+            FluentValidationModelValidatorProvider.Configure(config, w => w.ValidatorFactory = new AutofacValidatorFactory(container));
         }
     }
 }

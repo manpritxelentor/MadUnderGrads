@@ -1,4 +1,5 @@
-﻿using MadUnderGrads.API.App_Start;
+﻿using FluentValidation.WebApi;
+using MadUnderGrads.API.App_Start;
 using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections.Generic;
@@ -26,6 +27,9 @@ namespace MadUnderGrads.API
             //BundleConfig.RegisterBundles(BundleTable.Bundles);
             DependencyConfig.Register();
             AutomapperConfig.Register();
+
+            
+
         }
     }
 }

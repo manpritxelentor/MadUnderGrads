@@ -7,6 +7,11 @@ namespace MadUnderGrads.API.Models
 {
     public class TeacherModel : IBaseEntity
     {
+        public TeacherModel()
+        {
+            Reviews = new List<TeacherReviewModel>();
+        }
+
         public int Id { get; set; }
         public string Name { get; set; }
         public string ProfessorName { get; set; }
@@ -16,5 +21,7 @@ namespace MadUnderGrads.API.Models
         public DateTime CreatedOn { get; set; }
         public string ModifiedBy { get; set; }
         public DateTime? ModifiedOn { get; set; }
+
+        public virtual ICollection<TeacherReviewModel> Reviews { get; set; }
     }
 }

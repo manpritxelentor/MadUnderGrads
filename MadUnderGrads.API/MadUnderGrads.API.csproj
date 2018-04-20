@@ -197,6 +197,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App_Start\AutofacValidatorFactory.cs" />
     <Compile Include="App_Start\AutomapperConfig.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\DependencyConfig.cs" />
@@ -205,11 +206,13 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\SwaggerConfig.cs" />
+    <Compile Include="App_Start\ValidationModule.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BaseApiController.cs" />
     <Compile Include="Controllers\ProductTextbookController.cs" />
     <Compile Include="Controllers\TeacherController.cs" />
+    <Compile Include="Controllers\TeacherReviewController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="DataModels\BaseModel.cs" />
     <Compile Include="DataModels\ProductApparelDataModel.cs" />
@@ -218,7 +221,9 @@
     <Compile Include="DataModels\ProductMisellanousDataModel.cs" />
     <Compile Include="DataModels\ProductTextBookDataModel.cs" />
     <Compile Include="DataModels\TeacherDataModel.cs" />
+    <Compile Include="DataModels\TeacherReviewDataModel.cs" />
     <Compile Include="DataModels\Validator\ProductTextBookDataModelValidator.cs" />
+    <Compile Include="DataModels\Validator\TeacherReviewValidator.cs" />
     <Compile Include="Filters\GlobalExceptionLogger.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -234,6 +239,7 @@
     <Compile Include="Models\Configurations\ProductModelMap.cs" />
     <Compile Include="Models\Configurations\ProductTextbookModelMap.cs" />
     <Compile Include="Models\Configurations\TeacherModelMap.cs" />
+    <Compile Include="Models\Configurations\TeacherReviewModelMap.cs" />
     <Compile Include="Models\IDataContext.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ProductApparelModel.cs" />
@@ -243,6 +249,7 @@
     <Compile Include="Models\ProductModel.cs" />
     <Compile Include="Models\ProductTextbookModel.cs" />
     <Compile Include="Models\TeacherModel.cs" />
+    <Compile Include="Models\TeacherReviewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\ApplicationOAuthProvider.cs" />
     <Compile Include="Repository\EfGenericRepository.cs" />
@@ -252,10 +259,12 @@
     <Compile Include="Repository\ProductMisellanousRepository.cs" />
     <Compile Include="Repository\ProductTextBookRepository.cs" />
     <Compile Include="Repository\TeacherRepository.cs" />
+    <Compile Include="Repository\TeacherReviewRepository.cs" />
     <Compile Include="Repository\UnitOfWork.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
     <Compile Include="Service\ProductApparelService.cs" />
     <Compile Include="Service\ProductTextBookService.cs" />
+    <Compile Include="Service\TeacherReviewService.cs" />
     <Compile Include="Service\TeacherService.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="Utility\IdentityHelper.cs" />

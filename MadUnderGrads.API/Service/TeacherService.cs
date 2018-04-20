@@ -16,6 +16,7 @@ namespace MadUnderGrads.API.Service
         bool Insert(TeacherDataModel model, string userId);
         bool Update(TeacherDataModel model, string userId);
         bool Delete(int teacherId, string userId);
+        bool IsTeacherExists(int teacherId);
     }
 
     public class TeacherService : ITeacherService
@@ -61,6 +62,11 @@ namespace MadUnderGrads.API.Service
             entity.CreatedOn = DateTime.Now;
             teacherRepository.Insert(entity);
             return unitOfWork.Commit() > 0;
+        }
+
+        public bool IsTeacherExists(int teacherId)
+        {
+            return teacherRepository.IsTeacherExists(teacherId);
         }
 
         public bool Update(TeacherDataModel model, string userId)

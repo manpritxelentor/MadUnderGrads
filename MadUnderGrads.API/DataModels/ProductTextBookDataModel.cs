@@ -7,7 +7,6 @@ using System.Web;
 
 namespace MadUnderGrads.API.DataModels
 {
-    [Validator(typeof(ProductTextBookDataModelValidator))]
     public class ProductTextBookDataModel : IBaseModel
     {
         public int Id { get; set; }

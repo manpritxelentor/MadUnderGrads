@@ -213,7 +213,6 @@
     <Compile Include="Controllers\ProductTextbookController.cs" />
     <Compile Include="Controllers\TeacherController.cs" />
     <Compile Include="Controllers\TeacherReviewController.cs" />
-    <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="DataModels\BaseModel.cs" />
     <Compile Include="DataModels\ProductApparelDataModel.cs" />
     <Compile Include="DataModels\ProductElectronicsDataModel.cs" />

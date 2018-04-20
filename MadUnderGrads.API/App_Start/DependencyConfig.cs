@@ -37,13 +37,19 @@ namespace MadUnderGrads.API.App_Start
                     .InstancePerLifetimeScope();
 
             // Register All repository
-            builder.RegisterType<ProductTextBookRepository>()
-                .As<IProductTextBookRepository>()
+            var repositoryTypes = typeof(ProductTextBookRepository).Assembly.GetTypes()
+                .Where(w => w.Name.EndsWith("Repository")).ToArray();
+
+            builder.RegisterTypes(repositoryTypes)
+                .AsImplementedInterfaces()
                 .InstancePerLifetimeScope();
 
             // Register All services
-            builder.RegisterType<ProductTextBookService>()
-                .As<IProductTextBookService>()
+            var serviceTypes = typeof(ProductTextBookService).Assembly.GetTypes()
+                .Where(w => w.Name.EndsWith("Service")).ToArray();
+
+            builder.RegisterTypes(serviceTypes)
+                .AsImplementedInterfaces()
                 .InstancePerLifetimeScope();
 
             builder.RegisterType<MappingUtility>()
@@ -51,6 +57,10 @@ namespace MadUnderGrads.API.App_Start
 
             builder.RegisterType<UnitOfWork>()
                 .As<IUnitOfWork>()
+                .InstancePerLifetimeScope();
+
+            builder.RegisterType<IdentityHelper>()
+                .As<IIdentityHelper>()
                 .InstancePerLifetimeScope();
 
             // Set the dependency resolver to be Autofac.

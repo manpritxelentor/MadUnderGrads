@@ -8,6 +8,8 @@ using System;
 using MadUnderGrads.API.Models.Configurations;
 using System.Data.Entity;
 using System.Linq;
+using System.Data.Entity.ModelConfiguration.Configuration;
+using System.Data.Entity.ModelConfiguration;
 
 namespace MadUnderGrads.API.Models
 {
@@ -54,16 +56,10 @@ namespace MadUnderGrads.API.Models
 
         protected override void OnModelCreating(System.Data.Entity.DbModelBuilder modelBuilder)
         {
-            modelBuilder.Configurations.Add(entityTypeConfiguration: new CategoryModelMap());
-            modelBuilder.Configurations.Add(entityTypeConfiguration: new ProductModelMap());
-            modelBuilder.Configurations.Add(entityTypeConfiguration: new ProductApparelModelMap());
-            modelBuilder.Configurations.Add(entityTypeConfiguration: new ProductElectronicsModelMap());
-            modelBuilder.Configurations.Add(entityTypeConfiguration: new ProductFurnitureModelMap());
-            modelBuilder.Configurations.Add(entityTypeConfiguration: new ProductMisellanousModelMap());
-            modelBuilder.Configurations.Add(entityTypeConfiguration: new ProductTextbookModelMap());
-
+            // Adding all mapping class using reflection
+            modelBuilder.Configurations.AddFromNamespaceContainingType<CategoryModelMap>();
+            
             base.OnModelCreating(modelBuilder);
-
         }
 
         public DbSet<CategoryModel> Categories { get; set; }
@@ -105,6 +101,45 @@ namespace MadUnderGrads.API.Models
                 Id = 1,
                 Name = "Textbooks"
             });
+        }
+    }
+
+
+
+    public static class EFExtensions
+    {
+        public static void AddFromNamespaceContainingType<TEntityType>(this ConfigurationRegistrar configRegistrar)
+            where TEntityType : class
+        {
+            var entityType = typeof(TEntityType);
+            var configTypeInfo = entityType.Assembly.GetTypes()
+                .Where(x => x.Namespace == entityType.Namespace &&
+                            x.BaseType != null &&
+                            x.BaseType.IsGenericType &&
+                            x.BaseType.GetGenericTypeDefinition() == typeof(EntityTypeConfiguration<>))
+                .Select(x => new
+                {
+                    ConfigType = x,
+                    EntityType = x.BaseType.GetGenericArguments()[0]
+                })
+                .ToArray();
+
+            foreach (var configInfo in configTypeInfo)
+            {
+                AddConfigToRegistrar(configInfo.ConfigType, configInfo.EntityType, configRegistrar);
+            }
+        }
+
+        private static void AddConfigToRegistrar(Type configType, Type entityType, ConfigurationRegistrar configRegistrar)
+        {
+            var addMethod = typeof(ConfigurationRegistrar)
+                .GetMethods()
+                .Single(x => x.Name == "Add" && x.GetParameters()[0].ParameterType.GetGenericTypeDefinition() == typeof(EntityTypeConfiguration<>))
+                .MakeGenericMethod(entityType);
+
+            var configInstance = Activator.CreateInstance(configType);
+
+            addMethod.Invoke(configRegistrar, new[] { configInstance });
         }
     }
 }

@@ -7,7 +7,7 @@ using System.Web.Http;
 
 namespace MadUnderGrads.API.Controllers
 {
-    //[Authorize]
+    [Authorize]
     public class BaseApiController : ApiController
     {
     }

@@ -26,6 +26,9 @@ namespace MadUnderGrads.API.App_Start
 
                 cfg.CreateMap<ProductTextBookDataModel, ProductTextbookModel>();
                 cfg.CreateMap<ProductTextBookDataModel, ProductModel>();
+
+                cfg.CreateMap<TeacherDataModel, TeacherModel>();
+                cfg.CreateMap<TeacherModel, TeacherDataModel>();
             });
         }
     }

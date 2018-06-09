@@ -9,6 +9,8 @@ using System.Web.Http.ExceptionHandling;
 using MadUnderGrads.API.Filters;
 using System.Web.ModelBinding;
 using FluentValidation.WebApi;
+using System.Configuration;
+using System.Web.Http.Cors;
 
 namespace MadUnderGrads.API
 {
@@ -16,6 +18,11 @@ namespace MadUnderGrads.API
     {
         public static void Register(HttpConfiguration config)
         {
+            // CORS settings
+            string allowedOrigins = ConfigurationManager.AppSettings["AllowedOrigins"].ToString();
+            var cors = new EnableCorsAttribute(allowedOrigins, "*", "*");
+            config.EnableCors(cors);
+
             // Web API configuration and services
             config.Services.Add(typeof(IExceptionLogger), new GlobalExceptionLogger());
 

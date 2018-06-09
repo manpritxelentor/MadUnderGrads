@@ -17,6 +17,8 @@ namespace MadUnderGrads.API.Service
         bool Update(TeacherDataModel model, string userId);
         bool Delete(int teacherId, string userId);
         bool IsTeacherExists(int teacherId);
+        IEnumerable<SchoolDataModel> GetSchools();
+        IEnumerable<TeacherDataModel> GetBySchool(string schoolName);
     }
 
     public class TeacherService : ITeacherService
@@ -53,6 +55,23 @@ namespace MadUnderGrads.API.Service
             if (data == null)
                 return null;
             return mappingUtility.Map<TeacherModel, TeacherDataModel>(data);
+        }
+
+        public IEnumerable<TeacherDataModel> GetBySchool(string schoolName)
+        {
+            return mappingUtility.Project<TeacherModel, TeacherDataModel>
+                (teacherRepository.GetAll()
+                .Where(w => w.SchoolName.Equals(schoolName)))
+                .ToList();
+        }
+
+        public IEnumerable<SchoolDataModel> GetSchools()
+        {
+            return teacherRepository.GetAll()
+                .Select(w => new SchoolDataModel
+                {
+                    SchoolName = w.SchoolName
+                }).ToList();
         }
 
         public bool Insert(TeacherDataModel model, string userId)

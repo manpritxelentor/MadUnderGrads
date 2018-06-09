@@ -27,9 +27,7 @@ namespace MadUnderGrads.API
             //BundleConfig.RegisterBundles(BundleTable.Bundles);
             DependencyConfig.Register();
             AutomapperConfig.Register();
-
-            
-
         }
+
     }
 }

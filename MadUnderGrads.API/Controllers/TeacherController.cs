@@ -11,6 +11,7 @@ using System.Web.Http;
 
 namespace MadUnderGrads.API.Controllers
 {
+    [RoutePrefix("api/Teacher")]
     public class TeacherController : BaseApiController
     {
         private readonly ITeacherService teacherService;
@@ -63,6 +64,16 @@ namespace MadUnderGrads.API.Controllers
 
             bool result = teacherService.Update(model, identityHelper.UserId);
             return Ok(result);
+        }
+
+        [HttpGet]
+        [Route("GetBySchool/{schoolName}")]
+        public IHttpActionResult GetBySchool(string schoolName)
+        {
+            var data = teacherService.GetBySchool(schoolName);
+            if (data == null)
+                return NotFound();
+            return Ok(data);
         }
     }
 }

@@ -14,8 +14,8 @@ namespace MadUnderGrads.API.Service
         IEnumerable<ProductTextBookDataModel> GetAll();
         ProductTextBookDataModel GetById(int id);
         bool Delete(int id);
-        bool Insert(ProductTextBookDataModel model);
-        bool Update(int id, ProductTextBookDataModel model);
+        bool Insert(ProductTextBookDataModel model, string userId);
+        bool Update(int id, ProductTextBookDataModel model, string userId);
     }
 
     public class ProductTextBookService : IProductTextBookService
@@ -55,25 +55,30 @@ namespace MadUnderGrads.API.Service
             return _unitOfWork.Commit() > 0;
         }
 
-        public bool Insert(ProductTextBookDataModel model)
+        public bool Insert(ProductTextBookDataModel model, string userId)
         {
+            
             var entity = _mappingUtility.Map<ProductTextBookDataModel, ProductTextbookModel>(model);
             if (entity != null)
             {
                 entity.Product = _mappingUtility.Map<ProductTextBookDataModel, ProductModel>(model);
+                entity.Product.CreatedBy = userId;
+                entity.Product.CreatedOn = DateTime.Now;
                 _productTextBookRepository.Insert(entity);
                 return _unitOfWork.Commit() > 0;
             }
             return false;
         }
 
-        public bool Update(int id, ProductTextBookDataModel model)
+        public bool Update(int id, ProductTextBookDataModel model, string userId)
         {
             var availableEntity = _productTextBookRepository.GetById(id);
             var entity = _mappingUtility.Map<ProductTextBookDataModel, ProductTextbookModel>(model, availableEntity);
             if (entity != null)
             {
                 entity.Product = _mappingUtility.Map<ProductTextBookDataModel, ProductModel>(model, availableEntity.Product);
+                entity.Product.UpdatedBy = userId;
+                entity.Product.UpdatedOn = DateTime.Now;
                 _productTextBookRepository.Update(entity);
                 return _unitOfWork.Commit() > 0;
             }

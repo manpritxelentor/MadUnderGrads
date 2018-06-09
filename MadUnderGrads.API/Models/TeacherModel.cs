@@ -21,6 +21,7 @@ namespace MadUnderGrads.API.Models
         public DateTime CreatedOn { get; set; }
         public string ModifiedBy { get; set; }
         public DateTime? ModifiedOn { get; set; }
+        public bool IsApproved { get; set; }
 
         public virtual ICollection<TeacherReviewModel> Reviews { get; set; }
     }

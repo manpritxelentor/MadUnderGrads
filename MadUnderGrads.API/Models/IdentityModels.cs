@@ -10,6 +10,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Data.Entity.ModelConfiguration.Configuration;
 using System.Data.Entity.ModelConfiguration;
+using System.Collections.Generic;
 
 namespace MadUnderGrads.API.Models
 {
@@ -22,11 +23,20 @@ namespace MadUnderGrads.API.Models
     // You can add profile data for the user by adding more properties to your ApplicationUser class, please visit http://go.microsoft.com/fwlink/?LinkID=317594 to learn more.
     public class ApplicationUser : IdentityUser
     {
+        public ApplicationUser()
+        {
+            CreatedProducts = new List<ProductModel>();
+            UpdatedProducts = new List<ProductModel>();
+        }
+
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string PasswordHint { get; set; }
         public string PasswordReponse { get; set; }
         public DateTime? DateOfBirth { get; set; }
+
+        public virtual ICollection<ProductModel> CreatedProducts { get; set; }
+        public virtual ICollection<ProductModel> UpdatedProducts { get; set; }
 
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager, string authenticationType)
         {

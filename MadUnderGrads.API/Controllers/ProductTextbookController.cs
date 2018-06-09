@@ -1,5 +1,7 @@
 ﻿using MadUnderGrads.API.DataModels;
 using MadUnderGrads.API.Service;
+using MadUnderGrads.API.Utility;
+using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,11 +14,14 @@ namespace MadUnderGrads.API.Controllers
     public class ProductTextbookController : BaseApiController
     {
         private readonly IProductTextBookService _productTextBookService;
+        private readonly IIdentityHelper _identityHelper;
 
         // Test changes
-        public ProductTextbookController(IProductTextBookService productTextBookService)
+        public ProductTextbookController(IProductTextBookService productTextBookService
+            , IIdentityHelper identityHelper)
         {
             _productTextBookService = productTextBookService;
+            _identityHelper = identityHelper;
         }
 
         public IHttpActionResult Get()
@@ -47,7 +52,7 @@ namespace MadUnderGrads.API.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            bool result = _productTextBookService.Insert(model);
+            bool result = _productTextBookService.Insert(model, _identityHelper.UserId);
             return Ok(result);
         }
 
@@ -56,8 +61,8 @@ namespace MadUnderGrads.API.Controllers
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
-
-            bool result = _productTextBookService.Update(id, model);
+            string userId = User.Identity.GetUserId<string>();
+            bool result = _productTextBookService.Update(id, model, _identityHelper.UserId);
             return Ok(result);
         }
     }

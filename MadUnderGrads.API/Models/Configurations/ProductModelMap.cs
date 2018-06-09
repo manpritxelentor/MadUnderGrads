@@ -17,15 +17,20 @@ namespace MadUnderGrads.API.Models.Configurations
                 .IsOptional()
                 .HasMaxLength(2000);
 
-            Property(w => w.Email)
-                .IsOptional()
-                .HasMaxLength(50);
-
-            Property(w => w.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            Property(w => w.Id)
+                .HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
 
             HasRequired(w => w.Category)
                 .WithMany(w => w.Products)
                 .HasForeignKey(w => w.CategoryId);
+
+            HasOptional(w => w.Creator)
+                .WithMany(w => w.CreatedProducts)
+                .HasForeignKey(w => w.CreatedBy);
+
+            HasOptional(w => w.Updator)
+                .WithMany(w => w.UpdatedProducts)
+                .HasForeignKey(w => w.UpdatedBy);
 
             ToTable("tbl_Product");
         }

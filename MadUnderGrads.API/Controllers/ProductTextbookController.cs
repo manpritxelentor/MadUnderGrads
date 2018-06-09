@@ -11,6 +11,7 @@ using System.Web.Http;
 
 namespace MadUnderGrads.API.Controllers
 {
+    [RoutePrefix("api/ProductTextbook")]
     public class ProductTextbookController : BaseApiController
     {
         private readonly IProductTextBookService _productTextBookService;
@@ -51,7 +52,6 @@ namespace MadUnderGrads.API.Controllers
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
-
             bool result = _productTextBookService.Insert(model, _identityHelper.UserId);
             return Ok(result);
         }
@@ -61,8 +61,23 @@ namespace MadUnderGrads.API.Controllers
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
-            string userId = User.Identity.GetUserId<string>();
             bool result = _productTextBookService.Update(id, model, _identityHelper.UserId);
+            return Ok(result);
+        }
+
+        [HttpGet]
+        [Route("GetMyBooks")]
+        public IHttpActionResult GetMyBooks()
+        {
+            var result = _productTextBookService.GetMyBooks(_identityHelper.UserId);
+            return Ok(result);
+        }
+
+        [HttpPost]
+        [Route("SellProduct/{id}")]
+        public IHttpActionResult SellProduct(int id)
+        {
+            bool result = _productTextBookService.SellProduct(id);
             return Ok(result);
         }
     }

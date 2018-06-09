@@ -16,6 +16,8 @@ namespace MadUnderGrads.API.Service
         bool Delete(int id);
         bool Insert(ProductTextBookDataModel model, string userId);
         bool Update(int id, ProductTextBookDataModel model, string userId);
+        IEnumerable<ProductTextBookDataModel> GetMyBooks(string userId);
+        bool SellProduct(int id);
     }
 
     public class ProductTextBookService : IProductTextBookService
@@ -83,6 +85,23 @@ namespace MadUnderGrads.API.Service
                 return _unitOfWork.Commit() > 0;
             }
             return false;
+        }
+
+        public IEnumerable<ProductTextBookDataModel> GetMyBooks(string userId)
+        {
+            return _mappingUtility
+                .Project<ProductTextbookModel, ProductTextBookDataModel>(
+                _productTextBookRepository.GetBooksByUserId(userId))
+                .ToList();
+        }
+
+        public bool SellProduct(int id)
+        {
+            var data = _productTextBookRepository.GetById(id);
+            if (data != null)
+                data.Product.IsSold = true;
+            _productTextBookRepository.Update(data);
+            return _unitOfWork.Commit() > 0;
         }
     }
 }

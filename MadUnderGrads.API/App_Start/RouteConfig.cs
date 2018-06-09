@@ -15,6 +15,8 @@ namespace MadUnderGrads.API
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
+            routes.MapMvcAttributeRoutes();
+
             routes.MapHttpRoute(
                 name: "swagger_root",
                 routeTemplate: "",

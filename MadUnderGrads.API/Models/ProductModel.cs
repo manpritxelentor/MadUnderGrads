@@ -9,7 +9,7 @@ namespace MadUnderGrads.API.Models
     {
         public ProductModel()
         {
-            
+            Pictures = new List<PictureModel>();
         }
 
         public int Id { get; set; }
@@ -30,6 +30,8 @@ namespace MadUnderGrads.API.Models
         public virtual ProductElectronicsModel ProductElectronics { get; set; }
         public virtual ProductFurnitureModel ProductFurniture { get; set; }
         public virtual ProductMisellanousModel ProductMisellanous { get; set; }
+        public virtual ICollection<PictureModel> Pictures { get; set; }
+
 
         public virtual ApplicationUser Creator { get; set; }
         public virtual ApplicationUser Updator { get; set; }

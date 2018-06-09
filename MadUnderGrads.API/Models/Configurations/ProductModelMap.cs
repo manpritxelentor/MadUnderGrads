@@ -32,6 +32,15 @@ namespace MadUnderGrads.API.Models.Configurations
                 .WithMany(w => w.UpdatedProducts)
                 .HasForeignKey(w => w.UpdatedBy);
 
+            HasMany(w => w.Pictures)
+                .WithMany(w => w.Products)
+                .Map(s =>
+                {
+                    s.MapLeftKey("PictureId");
+                    s.MapRightKey("ProductId");
+                    s.ToTable("tbl_ProductPictureMap");
+                });
+
             ToTable("tbl_Product");
         }
     }

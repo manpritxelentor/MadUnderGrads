@@ -244,6 +244,7 @@
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\CategoryModel.cs" />
     <Compile Include="Models\Configurations\CategoryModelMap.cs" />
+    <Compile Include="Models\Configurations\PictureModelMap.cs" />
     <Compile Include="Models\Configurations\ProductApparelModelMap.cs" />
     <Compile Include="Models\Configurations\ProductElectronicsModelMap.cs" />
     <Compile Include="Models\Configurations\ProductFurnitureModelMap.cs" />
@@ -254,6 +255,7 @@
     <Compile Include="Models\Configurations\TeacherReviewModelMap.cs" />
     <Compile Include="Models\IDataContext.cs" />
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\PictureModel.cs" />
     <Compile Include="Models\ProductApparelModel.cs" />
     <Compile Include="Models\ProductElectronicsModel.cs" />
     <Compile Include="Models\ProductFurnitureModel.cs" />
@@ -266,10 +268,12 @@
     <Compile Include="Providers\ApplicationOAuthProvider.cs" />
     <Compile Include="Repository\CategoryRepository.cs" />
     <Compile Include="Repository\EfGenericRepository.cs" />
+    <Compile Include="Repository\PictureRepository.cs" />
     <Compile Include="Repository\ProductApparelRepository.cs" />
     <Compile Include="Repository\ProductElectronicsRepository.cs" />
     <Compile Include="Repository\ProductFurnitureRepository.cs" />
     <Compile Include="Repository\ProductMisellanousRepository.cs" />
+    <Compile Include="Repository\ProductRepository.cs" />
     <Compile Include="Repository\ProductTextBookRepository.cs" />
     <Compile Include="Repository\TeacherRepository.cs" />
     <Compile Include="Repository\TeacherReviewRepository.cs" />
@@ -277,6 +281,7 @@
     <Compile Include="Results\ChallengeResult.cs" />
     <Compile Include="Service\CategoryService.cs" />
     <Compile Include="Service\ProductApparelService.cs" />
+    <Compile Include="Service\ProductService.cs" />
     <Compile Include="Service\ProductTextBookService.cs" />
     <Compile Include="Service\TeacherReviewService.cs" />
     <Compile Include="Service\TeacherService.cs" />

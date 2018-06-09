@@ -12,6 +12,7 @@ namespace MadUnderGrads.API.Service
     public interface ITeacherReviewService
     {
         List<TeacherReviewDataModel> GetAll();
+        IEnumerable<TeacherReviewDataModel> GetByTeacherId(int teacherId);
         TeacherReviewDataModel GetById(int id);
         bool Insert(TeacherReviewDataModel model, string userId);
         bool Update(TeacherReviewDataModel model, string userId);
@@ -45,6 +46,12 @@ namespace MadUnderGrads.API.Service
                 (teacherReviewRepository.GetAll()).ToList();
         }
 
+        public IEnumerable<TeacherReviewDataModel> GetByTeacherId(int teacherId)
+        {
+            return mappingUtility.Project<TeacherReviewModel, TeacherReviewDataModel>
+                (teacherReviewRepository.GetByTeacherId(teacherId)).ToList();
+        }
+
         public TeacherReviewDataModel GetById(int id)
         {
             var data = teacherReviewRepository.GetById(id);
@@ -55,7 +62,7 @@ namespace MadUnderGrads.API.Service
 
         public bool Insert(TeacherReviewDataModel model, string userId)
         {
-            var entity  = mappingUtility.Map<TeacherReviewDataModel, TeacherReviewModel>(model);
+            var entity = mappingUtility.Map<TeacherReviewDataModel, TeacherReviewModel>(model);
             entity.Reviewer = userId;
             entity.ReviewDate = DateTime.Now;
             teacherReviewRepository.Insert(entity);

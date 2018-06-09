@@ -10,6 +10,7 @@ using System.Web.Http;
 
 namespace MadUnderGrads.API.Controllers
 {
+    [RoutePrefix("api/TeacherReview")]
     public class TeacherReviewController : BaseApiController
     {
         private readonly ITeacherReviewService teacherReviewService;
@@ -24,6 +25,16 @@ namespace MadUnderGrads.API.Controllers
         public IHttpActionResult Get()
         {
             var data = teacherReviewService.GetAll();
+            if (data == null)
+                return NotFound();
+            return Ok(data);
+        }
+
+        [HttpGet]
+        [Route("GetByTeacherId/{teacherId}")]
+        public IHttpActionResult GetByTeacherId(int teacherId)
+        {
+            var data = teacherReviewService.GetByTeacherId(teacherId);
             if (data == null)
                 return NotFound();
             return Ok(data);

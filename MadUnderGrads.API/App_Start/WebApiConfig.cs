@@ -18,10 +18,10 @@ namespace MadUnderGrads.API
     {
         public static void Register(HttpConfiguration config)
         {
-            // CORS settings
-            string allowedOrigins = ConfigurationManager.AppSettings["AllowedOrigins"].ToString();
-            var cors = new EnableCorsAttribute(allowedOrigins, "*", "*");
-            config.EnableCors(cors);
+            //// CORS settings
+            //string allowedOrigins = ConfigurationManager.AppSettings["AllowedOrigins"].ToString();
+            //var cors = new EnableCorsAttribute(allowedOrigins, "*", "*");
+            //config.EnableCors(cors);
 
             // Web API configuration and services
             config.Services.Add(typeof(IExceptionLogger), new GlobalExceptionLogger());

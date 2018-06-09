@@ -39,7 +39,7 @@ namespace MadUnderGrads.API.Service
         {
             return _mappingUtility
                 .Project<ProductTextbookModel, ProductTextBookDataModel>(
-                _productTextBookRepository.GetAll())
+                _productTextBookRepository.GetAll().Where(w => !w.Product.IsSold))
                 .ToList();
         }
 
@@ -59,7 +59,7 @@ namespace MadUnderGrads.API.Service
 
         public bool Insert(ProductTextBookDataModel model, string userId)
         {
-            
+
             var entity = _mappingUtility.Map<ProductTextBookDataModel, ProductTextbookModel>(model);
             if (entity != null)
             {

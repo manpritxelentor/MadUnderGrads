@@ -20,6 +20,7 @@ namespace MadUnderGrads.API.App_Start
                     .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Product.Description))
                     .ForMember(dest => dest.IsNegotiable, opt => opt.MapFrom(src => src.Product.IsNegotiable))
                     .ForMember(dest => dest.Price, opt => opt.MapFrom(src => src.Product.Price))
+                    .ForMember(dest => dest.IsSold, opt => opt.MapFrom(src => src.Product.IsSold))
                     .ForMember(dest => dest.UserDto, opt => opt.MapFrom(src => src.Product.Creator))
                     ;
 

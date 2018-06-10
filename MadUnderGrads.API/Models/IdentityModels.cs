@@ -27,6 +27,7 @@ namespace MadUnderGrads.API.Models
         {
             CreatedProducts = new List<ProductModel>();
             UpdatedProducts = new List<ProductModel>();
+            TeacherReviews = new List<TeacherReviewModel>();
         }
 
         public string FirstName { get; set; }
@@ -37,6 +38,7 @@ namespace MadUnderGrads.API.Models
 
         public virtual ICollection<ProductModel> CreatedProducts { get; set; }
         public virtual ICollection<ProductModel> UpdatedProducts { get; set; }
+        public virtual ICollection<TeacherReviewModel> TeacherReviews { get; set; }
 
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager, string authenticationType)
         {

@@ -60,7 +60,9 @@ namespace MadUnderGrads.API.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            bool result = teacherReviewService.Insert(model, identityHelper.UserId);
+            var result = teacherReviewService.Insert(model, identityHelper.UserId);
+            if (result == null)
+                return InternalServerError();
             return Ok(result);
         }
 
@@ -70,7 +72,9 @@ namespace MadUnderGrads.API.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            bool result = teacherReviewService.Update(model, identityHelper.UserId);
+            var result = teacherReviewService.Update(model, identityHelper.UserId);
+            if (result == null)
+                return InternalServerError();
             return Ok(result);
         }
     }

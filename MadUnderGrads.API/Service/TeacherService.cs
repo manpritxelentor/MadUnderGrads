@@ -13,8 +13,8 @@ namespace MadUnderGrads.API.Service
     {
         List<TeacherDataModel> GetAll();
         TeacherDataModel GetById(int id);
-        bool Insert(TeacherDataModel model, string userId);
-        bool Update(TeacherDataModel model, string userId);
+        TeacherDataModel Insert(TeacherDataModel model, string userId);
+        TeacherDataModel Update(TeacherDataModel model, string userId);
         bool Delete(int teacherId, string userId);
         bool IsTeacherExists(int teacherId);
         IEnumerable<SchoolDataModel> GetSchools();
@@ -71,16 +71,19 @@ namespace MadUnderGrads.API.Service
                 .Select(w => new SchoolDataModel
                 {
                     SchoolName = w.SchoolName
-                }).ToList();
+                }).Distinct().ToList();
         }
 
-        public bool Insert(TeacherDataModel model, string userId)
+        public TeacherDataModel Insert(TeacherDataModel model, string userId)
         {
             var entity = mappingUtility.Map<TeacherDataModel, TeacherModel>(model);
             entity.CreatedBy = userId;
             entity.CreatedOn = DateTime.Now;
             teacherRepository.Insert(entity);
-            return unitOfWork.Commit() > 0;
+            bool result =  unitOfWork.Commit() > 0;
+            if (result)
+                return  GetById(entity.Id);
+            return null;
         }
 
         public bool IsTeacherExists(int teacherId)
@@ -88,13 +91,16 @@ namespace MadUnderGrads.API.Service
             return teacherRepository.IsTeacherExists(teacherId);
         }
 
-        public bool Update(TeacherDataModel model, string userId)
+        public TeacherDataModel Update(TeacherDataModel model, string userId)
         {
             var entity = teacherRepository.GetById(model.Id);
             if (entity == null)
-                return false;
+                return null;
             mappingUtility.Map<TeacherDataModel, TeacherModel>(model, entity);
-            return unitOfWork.Commit() > 0;
+            bool result =  unitOfWork.Commit() > 0;
+            if (result)
+                return GetById(model.Id);
+            return null;
         }
     }
 }

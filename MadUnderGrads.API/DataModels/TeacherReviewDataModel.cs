@@ -11,5 +11,7 @@ namespace MadUnderGrads.API.DataModels
         public string Description { get; set; }
         public decimal? Rating { get; set; }
         public int TeacherId { get; set; }
+        public UserDataModel ReviewerDto { get; set; }
+        public DateTime ReviewDate { get; set; }
     }
 }

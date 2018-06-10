@@ -14,6 +14,7 @@ namespace MadUnderGrads.API.Models
         public string Reviewer { get; set; }
         public DateTime ReviewDate { get; set; }
 
+        public virtual ApplicationUser ReviewerUser { get; set; }
         public virtual TeacherModel Teacher { get; set; }
     }
 }

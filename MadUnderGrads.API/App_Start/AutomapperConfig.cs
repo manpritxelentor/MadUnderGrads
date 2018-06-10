@@ -33,7 +33,8 @@ namespace MadUnderGrads.API.App_Start
                 cfg.CreateMap<TeacherModel, TeacherDataModel>();
 
                 cfg.CreateMap<TeacherReviewDataModel, TeacherReviewModel>();
-                cfg.CreateMap<TeacherReviewModel, TeacherReviewDataModel>();
+                cfg.CreateMap<TeacherReviewModel, TeacherReviewDataModel>()
+                    .ForMember(dest => dest.ReviewerDto, opt => opt.MapFrom(src => src.ReviewerUser));
             });
         }
     }

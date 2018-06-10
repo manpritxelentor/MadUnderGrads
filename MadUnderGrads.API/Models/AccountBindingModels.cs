@@ -35,6 +35,16 @@ namespace MadUnderGrads.API.Models
     public class RegisterBindingModel
     {
         [Required]
+        public string FirstName { get; set; }
+
+        public string LastName { get; set; }
+
+        public DateTime? DateOfBirth { get; set; }
+
+        [Required]
+        public string UserName { get; set; }
+
+        [Required]
         [Display(Name = "Email")]
         public string Email { get; set; }
 

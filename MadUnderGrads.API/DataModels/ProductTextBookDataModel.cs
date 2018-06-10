@@ -7,7 +7,7 @@ using System.Web;
 
 namespace MadUnderGrads.API.DataModels
 {
-    public class ProductTextBookDataModel : IBaseModel
+    public class ProductTextBookDataModel : BaseProductModel
     {
         public int Id { get; set; }
         public int CategoryId { get; set; }

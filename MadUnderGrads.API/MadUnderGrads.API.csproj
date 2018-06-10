@@ -219,12 +219,15 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BaseApiController.cs" />
+    <Compile Include="Controllers\CategoryController.cs" />
     <Compile Include="Controllers\ProductController.cs" />
     <Compile Include="Controllers\ProductTextbookController.cs" />
     <Compile Include="Controllers\SchoolController.cs" />
     <Compile Include="Controllers\TeacherController.cs" />
     <Compile Include="Controllers\TeacherReviewController.cs" />
     <Compile Include="DataModels\BaseModel.cs" />
+    <Compile Include="DataModels\BaseProductModel.cs" />
+    <Compile Include="DataModels\CategoryDataModel.cs" />
     <Compile Include="DataModels\ProductApparelDataModel.cs" />
     <Compile Include="DataModels\ProductElectronicsDataModel.cs" />
     <Compile Include="DataModels\ProductFurnitureDataModel.cs" />

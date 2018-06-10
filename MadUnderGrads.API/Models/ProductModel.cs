@@ -23,6 +23,8 @@ namespace MadUnderGrads.API.Models
         public DateTime CreatedOn { get; set; }
         public string UpdatedBy { get; set; }
         public DateTime? UpdatedOn { get; set; }
+        public string Email { get; set; }
+        public string PhoneNumber { get; set; }
 
         public virtual CategoryModel Category { get; set; }
         public virtual ProductTextbookModel ProductTextbooks { get; set; }

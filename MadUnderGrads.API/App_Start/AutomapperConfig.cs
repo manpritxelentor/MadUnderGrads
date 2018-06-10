@@ -21,6 +21,8 @@ namespace MadUnderGrads.API.App_Start
                     .ForMember(dest => dest.IsNegotiable, opt => opt.MapFrom(src => src.Product.IsNegotiable))
                     .ForMember(dest => dest.Price, opt => opt.MapFrom(src => src.Product.Price))
                     .ForMember(dest => dest.IsSold, opt => opt.MapFrom(src => src.Product.IsSold))
+                    .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Product.Email))
+                    .ForMember(dest => dest.PhoneNumber, opt => opt.MapFrom(src => src.Product.PhoneNumber))
                     .ForMember(dest => dest.UserDto, opt => opt.MapFrom(src => src.Product.Creator))
                     ;
 
@@ -31,6 +33,8 @@ namespace MadUnderGrads.API.App_Start
 
                 cfg.CreateMap<TeacherDataModel, TeacherModel>();
                 cfg.CreateMap<TeacherModel, TeacherDataModel>();
+
+                cfg.CreateMap<CategoryModel, CategoryDataModel>();
 
                 cfg.CreateMap<TeacherReviewDataModel, TeacherReviewModel>();
                 cfg.CreateMap<TeacherReviewModel, TeacherReviewDataModel>()

@@ -32,7 +32,11 @@ namespace MadUnderGrads.API.App_Start
             builder.RegisterType<ConfirmEmailDataModelValidator>()
                 .Keyed<IValidator>(typeof(IValidator<ConfirmEmailDataModel>))
                 .As<IValidator>();
-            
+
+            builder.RegisterType<UpdateProfileDataModelValidator>()
+                .Keyed<IValidator>(typeof(IValidator<UpdateProfileDataModel>))
+                .As<IValidator>();
+
         }
     }
 }

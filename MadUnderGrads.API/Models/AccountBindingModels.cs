@@ -97,4 +97,12 @@ namespace MadUnderGrads.API.Models
         [Compare("NewPassword", ErrorMessage = "The new password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
     }
+
+    public class UserInfoDataModel
+    {
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string Email { get; set; }
+        public DateTime? DateOfBirth { get; set; }
+    }
 }

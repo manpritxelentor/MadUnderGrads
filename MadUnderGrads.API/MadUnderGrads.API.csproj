@@ -239,12 +239,14 @@
     <Compile Include="DataModels\SchoolDataModel.cs" />
     <Compile Include="DataModels\TeacherDataModel.cs" />
     <Compile Include="DataModels\TeacherReviewDataModel.cs" />
+    <Compile Include="DataModels\UpdateProfileDataModel.cs" />
     <Compile Include="DataModels\UserDataModel.cs" />
     <Compile Include="DataModels\Validator\ConfirmEmailDataModelValidator.cs" />
     <Compile Include="DataModels\Validator\ForgotPasswordDataModelValidator.cs" />
     <Compile Include="DataModels\Validator\ProductTextBookDataModelValidator.cs" />
     <Compile Include="DataModels\Validator\ResetPasswordDataModelValidator.cs" />
     <Compile Include="DataModels\Validator\TeacherReviewValidator.cs" />
+    <Compile Include="DataModels\Validator\UpdateProfileDataModelValidator.cs" />
     <Compile Include="Filters\GlobalExceptionLogger.cs" />
     <Compile Include="Filters\ProductModelBinder.cs" />
     <Compile Include="Global.asax.cs">

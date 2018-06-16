@@ -430,18 +430,24 @@ namespace MadUnderGrads.API.Controllers
                 return GetErrorResult(result);
             }
 
-            string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-            // Generate link;
-            string url = $"{ConfigurationManager.AppSettings["ConfirmRegisterLink"]}?email={user.Email}&code={code}";
-
-            string tempate = System.IO.File.ReadAllText(
-                System.Web.HttpContext.Current.Request.MapPath("~/Templates/RegistrationTemplate.html"));
-            tempate = tempate.Replace("@@Code@@", url);
-
-            // Send reset password link
-            var isResetLinkSent = _emailUtility.SendMail(user.Email, ConfigurationManager.AppSettings["ConfirmRegisterSubject"], tempate);
+            await SendEmailConfirmationMail(user);
 
             return Ok();
+        }
+
+        
+
+        [HttpPost]
+        [Route("SendUserConfirmation/{email}")]
+        [AllowAnonymous]
+        public async Task<IHttpActionResult> SendUserConfirmation(string email)
+        {
+            var user = await GetApplicationUserAsync(email, null);
+            if (user == null)
+                return NotFound();
+
+            var result = await SendEmailConfirmationMail(user);
+            return Ok(result);
         }
 
         [AllowAnonymous]
@@ -463,6 +469,41 @@ namespace MadUnderGrads.API.Controllers
             return Ok();
         }
 
+        [Route("UpdateProfile")]
+        [HttpPost]
+        public async Task<IHttpActionResult> UpdateProfile(UpdateProfileDataModel model)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var user = UserManager.FindById(User.Identity.GetUserId());
+            if (user == null)
+                return NotFound();
+
+            user.FirstName = model.FirstName;
+            user.LastName = model.LastName;
+            user.DateOfBirth = model.DateOfBirth;
+
+            var result = await UserManager.UpdateAsync(user);
+            if (!result.Succeeded)
+                return GetErrorResult(result);
+            return Ok();
+        }
+
+        [HttpGet]
+        [Route("GetUserDetails")]
+        public async Task<IHttpActionResult> GetUserDetails()
+        {
+            var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+            var result = new UserInfoDataModel
+            {
+                Email = user.Email,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                DateOfBirth = user.DateOfBirth
+            };
+            return Ok(result);
+        }
 
         // POST api/Account/RegisterExternal
         [OverrideAuthentication]
@@ -618,6 +659,21 @@ namespace MadUnderGrads.API.Controllers
                 _random.GetBytes(data);
                 return HttpServerUtility.UrlTokenEncode(data);
             }
+        }
+
+        private async Task<bool> SendEmailConfirmationMail(ApplicationUser user)
+        {
+            string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+            // Generate link;
+            string url = $"{ConfigurationManager.AppSettings["ConfirmRegisterLink"]}?email={user.Email}&code={code}";
+
+            string tempate = System.IO.File.ReadAllText(
+                System.Web.HttpContext.Current.Request.MapPath("~/Templates/RegistrationTemplate.html"));
+            tempate = tempate.Replace("@@Code@@", url);
+
+            // Send reset password link
+            var isResetLinkSent = _emailUtility.SendMail(user.Email, ConfigurationManager.AppSettings["ConfirmRegisterSubject"], tempate);
+            return isResetLinkSent;
         }
 
         #endregion

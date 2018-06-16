@@ -299,6 +299,7 @@
     <Compile Include="Service\TeacherService.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="Utility\Constants.cs" />
+    <Compile Include="Utility\IConfigurationUtility.cs" />
     <Compile Include="Utility\IdentityHelper.cs" />
     <Compile Include="Utility\IEmailUtility.cs" />
     <Compile Include="Utility\IMappingUtility.cs" />

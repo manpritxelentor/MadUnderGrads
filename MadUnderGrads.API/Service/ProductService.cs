@@ -18,6 +18,7 @@ namespace MadUnderGrads.API.Service
         bool SellProduct(int productId, string userId);
         bool Delete(int productId);
         BaseProductModel Insert(BaseProductModel model, string userId);
+        BaseProductModel Update(int id, BaseProductModel model, string userId);
     }
 
     public class ProductService : IProductService
@@ -26,7 +27,7 @@ namespace MadUnderGrads.API.Service
         private readonly IProductRepository productRepository;
         private readonly IPictureRepository pictureRepository;
         private readonly IUnitOfWork unitOfWork;
-        private readonly IMappingUtility mappingUtility; 
+        private readonly IMappingUtility mappingUtility;
         #endregion
 
         #region Constructors
@@ -39,7 +40,7 @@ namespace MadUnderGrads.API.Service
             this.pictureRepository = pictureRepository;
             this.unitOfWork = unitOfWork;
             this.mappingUtility = mappingUtility;
-        } 
+        }
         #endregion
 
         #region Public Methods
@@ -98,7 +99,7 @@ namespace MadUnderGrads.API.Service
 
         public BaseProductModel Insert(BaseProductModel model, string userId)
         {
-            ProductModel entity = MapDtoToProduct(model);
+            ProductModel entity = MapDtoToProduct(model, productRepository.Create());
             entity.CreatedBy = userId;
             entity.CreatedOn = DateTime.Now;
             productRepository.Insert(entity);
@@ -106,7 +107,20 @@ namespace MadUnderGrads.API.Service
             if (isSaved)
                 return GetById(entity.Id);
             return null;
-        } 
+        }
+
+        public BaseProductModel Update(int id, BaseProductModel model, string userId)
+        {
+            var entity = productRepository.GetById(id);
+            MapDtoToProduct(model, entity);
+            entity.UpdatedBy = userId;
+            entity.UpdatedOn = DateTime.Now;
+            productRepository.Update(entity);
+            bool isSaved = unitOfWork.Commit() > 0;
+            if (isSaved)
+                return GetById(entity.Id);
+            return null;
+        }
         #endregion
 
         #region Helper Methods
@@ -130,10 +144,10 @@ namespace MadUnderGrads.API.Service
             return null;
         }
 
-        private ProductModel MapDtoToProduct<T>(T data)
+        private ProductModel MapDtoToProduct<T>(T data, ProductModel entity)
             where T : BaseProductModel
         {
-            return mappingUtility.Map<T, ProductModel>(data);
+            return mappingUtility.Map<T, ProductModel>(data, entity);
         }
         #endregion
     }

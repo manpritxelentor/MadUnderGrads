@@ -15,35 +15,35 @@ namespace MadUnderGrads.API.Utility
 
     public class EmailUtility : IEmailUtility
     {
-        private readonly ILog _logger;
-        public EmailUtility()
+        private readonly IConfigurationUtility configurationUtility;
+        public EmailUtility(IConfigurationUtility configurationUtility)
         {
-            _logger = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+            this.configurationUtility = configurationUtility;
         }
 
         public bool SendMail(string email, string subject, string body)
         {
-            try
-            {
-                MailMessage mail = new MailMessage();
-                SmtpClient client = new SmtpClient("smtp.gmail.com");
+            MailMessage mail = new MailMessage();
+            SmtpClient client = new SmtpClient(ConfigurationManager.AppSettings["SmtpHost"]);
 
-                mail.From = new MailAddress(ConfigurationManager.AppSettings["EmailFrom"]);
+            mail.From = new MailAddress(ConfigurationManager.AppSettings["EmailFrom"]);
+            if (configurationUtility.IsDevelopmentMode)
+                mail.To.Add("hardik0207@gmail.com");
+            else
                 mail.To.Add(email);
-                mail.Subject = subject;
-                mail.Body = body;
-                mail.IsBodyHtml = true;
-                client.Port = Convert.ToInt32(ConfigurationManager.AppSettings["SmtpPort"]);
-                client.Credentials = new System.Net.NetworkCredential(ConfigurationManager.AppSettings["EmailUser"], ConfigurationManager.AppSettings["EmailPassword"]);
+            mail.Subject = subject;
+            mail.Body = body;
+            mail.IsBodyHtml = true;
+            mail.Priority = MailPriority.High;
+            client.Port = Convert.ToInt32(ConfigurationManager.AppSettings["SmtpPort"]);
+            client.Credentials = new System.Net.NetworkCredential(ConfigurationManager.AppSettings["EmailUser"], ConfigurationManager.AppSettings["EmailPassword"]);
+
+            if (client.Host.Contains("gmail"))
                 client.EnableSsl = Convert.ToBoolean(ConfigurationManager.AppSettings["SmtpEnableSsl"]);
-                client.Send(mail);
-                return true;
-            }
-            catch (Exception ex)
-            {
-                _logger.Error("Email Error", ex);
-                return false;
-            }
+
+            client.DeliveryMethod = SmtpDeliveryMethod.Network;
+            client.Send(mail);
+            return true;
         }
     }
 }

@@ -86,6 +86,16 @@ namespace MadUnderGrads.API.Controllers
         }
 
         [HttpPost]
+        [Route("Update/TxtBks/{productId}")]
+        public IHttpActionResult UpdateTextBook(int productId, ProductTextBookDataModel model)
+        {
+            var data = productService.Update(productId, model, identityHelper.UserId);
+            if (data == null)
+                return InternalServerError();
+            return Ok(data);
+        }
+
+        [HttpPost]
         [Route("UploadImage/{productId}")]
         public IHttpActionResult UploadImage(int productId)
         {

@@ -9,10 +9,10 @@ namespace MadUnderGrads.API.Repository
     public interface IGenericRepository<T>
         where T : IBaseEntity
     {
-        IQueryable<T> GetAll() ;
-        IQueryable<T> GetAllNoTracking() ;
-
-       T GetById(object id);
+        IQueryable<T> GetAll();
+        IQueryable<T> GetAllNoTracking();
+        T Create();
+        T GetById(object id);
         void Insert(T entity);
         void Update(T entity);
         void Delete(T entity);
@@ -27,6 +27,11 @@ namespace MadUnderGrads.API.Repository
         public EfGenericRepository(IDataContext dataContext)
         {
             _dataContext = dataContext;
+        }
+
+        public T Create()
+        {
+            return _dataContext.Create<T>();
         }
 
         public virtual void Delete(T entity)

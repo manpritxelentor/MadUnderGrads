@@ -13,6 +13,7 @@ namespace MadUnderGrads.API.Models
         void Delete<T>(T entity) where T : IBaseEntity;
         void Insert<T>(T entity) where T : IBaseEntity;
         void Update<T>(T entity) where T : IBaseEntity;
+        T Create<T>() where T : IBaseEntity;
         int SaveChanges();
     }
 }

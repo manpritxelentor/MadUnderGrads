@@ -36,7 +36,10 @@ namespace MadUnderGrads.API.App_Start
                 cfg.CreateMap<ApplicationUser, UserDataModel>();
 
                 cfg.CreateMap<ProductTextBookDataModel, ProductTextbookModel>();
-                cfg.CreateMap<ProductTextBookDataModel, ProductModel>();
+                cfg.CreateMap<ProductTextBookDataModel, ProductModel>()
+                    .ForPath(dest => dest.ProductTextbooks.ISBN, opt => opt.MapFrom(src => src.ISBN))
+                    .ForPath(dest => dest.ProductTextbooks.NotesIncluded, opt => opt.MapFrom(src => src.NotesIncluded))
+                    .ForPath(dest => dest.ProductTextbooks.Title, opt => opt.MapFrom(src => src.Title));
 
                 cfg.CreateMap<TeacherDataModel, TeacherModel>();
                 cfg.CreateMap<TeacherModel, TeacherDataModel>();

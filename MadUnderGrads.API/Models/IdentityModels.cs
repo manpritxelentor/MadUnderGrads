@@ -101,6 +101,11 @@ namespace MadUnderGrads.API.Models
             // Nothing to do here
         }
 
+        public T Create<T>() where T : IBaseEntity
+        {
+            return Set<T>().Create();
+        }
+
         public T GetById<T>(object id) where T : IBaseEntity => Set<T>().Find(id);
     }
 

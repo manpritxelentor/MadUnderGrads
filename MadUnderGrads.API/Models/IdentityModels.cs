@@ -70,7 +70,7 @@ namespace MadUnderGrads.API.Models
         {
             // Adding all mapping class using reflection
             modelBuilder.Configurations.AddFromNamespaceContainingType<CategoryModelMap>();
-            
+
             base.OnModelCreating(modelBuilder);
         }
 

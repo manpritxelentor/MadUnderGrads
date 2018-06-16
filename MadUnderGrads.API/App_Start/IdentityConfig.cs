@@ -29,10 +29,10 @@ namespace MadUnderGrads.API
             manager.PasswordValidator = new PasswordValidator
             {
                 RequiredLength = 6,
-                RequireNonLetterOrDigit = true,
-                RequireDigit = true,
-                RequireLowercase = true,
-                RequireUppercase = true,
+                RequireNonLetterOrDigit = false,
+                RequireDigit = false,
+                RequireLowercase = false,
+                RequireUppercase = false,
                 
             };
             var dataProtectionProvider = options.DataProtectionProvider;
@@ -40,26 +40,7 @@ namespace MadUnderGrads.API
             {
                 manager.UserTokenProvider = new DataProtectorTokenProvider<ApplicationUser>(dataProtectionProvider.Create("ASP.NET Identity"));
             }
-
-            manager.PasswordHasher = new EncrytionPasswordHasher();
             return manager;
-        }
-    }
-
-
-    // TODO: Add hashing algorithm here for password hashing
-    public class EncrytionPasswordHasher : IPasswordHasher
-    {
-        public string HashPassword(string password)
-        {
-            return password;
-        }
-
-        public PasswordVerificationResult VerifyHashedPassword(string hashedPassword, string providedPassword)
-        {
-            if (hashedPassword == providedPassword)
-                return PasswordVerificationResult.Success;
-            return PasswordVerificationResult.Failed;
         }
     }
 }

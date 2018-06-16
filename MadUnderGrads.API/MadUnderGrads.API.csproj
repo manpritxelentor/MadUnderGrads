@@ -228,18 +228,25 @@
     <Compile Include="DataModels\BaseModel.cs" />
     <Compile Include="DataModels\BaseProductModel.cs" />
     <Compile Include="DataModels\CategoryDataModel.cs" />
+    <Compile Include="DataModels\ConfirmEmailDataModel.cs" />
+    <Compile Include="DataModels\ForgotPasswordDataModel.cs" />
     <Compile Include="DataModels\ProductApparelDataModel.cs" />
     <Compile Include="DataModels\ProductElectronicsDataModel.cs" />
     <Compile Include="DataModels\ProductFurnitureDataModel.cs" />
     <Compile Include="DataModels\ProductMisellanousDataModel.cs" />
     <Compile Include="DataModels\ProductTextBookDataModel.cs" />
+    <Compile Include="DataModels\ResetPasswordDataModel.cs" />
     <Compile Include="DataModels\SchoolDataModel.cs" />
     <Compile Include="DataModels\TeacherDataModel.cs" />
     <Compile Include="DataModels\TeacherReviewDataModel.cs" />
     <Compile Include="DataModels\UserDataModel.cs" />
+    <Compile Include="DataModels\Validator\ConfirmEmailDataModelValidator.cs" />
+    <Compile Include="DataModels\Validator\ForgotPasswordDataModelValidator.cs" />
     <Compile Include="DataModels\Validator\ProductTextBookDataModelValidator.cs" />
+    <Compile Include="DataModels\Validator\ResetPasswordDataModelValidator.cs" />
     <Compile Include="DataModels\Validator\TeacherReviewValidator.cs" />
     <Compile Include="Filters\GlobalExceptionLogger.cs" />
+    <Compile Include="Filters\ProductModelBinder.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -289,13 +296,17 @@
     <Compile Include="Service\TeacherReviewService.cs" />
     <Compile Include="Service\TeacherService.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="Utility\Constants.cs" />
     <Compile Include="Utility\IdentityHelper.cs" />
+    <Compile Include="Utility\IEmailUtility.cs" />
     <Compile Include="Utility\IMappingUtility.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
+    <Content Include="Templates\ForgotPasswordTemplate.html" />
+    <Content Include="Templates\RegistrationTemplate.html" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

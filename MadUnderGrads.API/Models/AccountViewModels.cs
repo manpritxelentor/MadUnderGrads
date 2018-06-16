@@ -40,4 +40,5 @@ namespace MadUnderGrads.API.Models
 
         public string ProviderKey { get; set; }
     }
+
 }

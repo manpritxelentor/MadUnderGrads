@@ -16,6 +16,9 @@ using Microsoft.Owin.Security.OAuth;
 using MadUnderGrads.API.Models;
 using MadUnderGrads.API.Providers;
 using MadUnderGrads.API.Results;
+using MadUnderGrads.API.DataModels;
+using MadUnderGrads.API.Utility;
+using System.Configuration;
 
 namespace MadUnderGrads.API.Controllers
 {
@@ -25,16 +28,20 @@ namespace MadUnderGrads.API.Controllers
     {
         private const string LocalLoginProvider = "Local";
         private ApplicationUserManager _userManager;
+        private readonly IEmailUtility _emailUtility;
 
-        public AccountController()
+        public AccountController(IEmailUtility emailUtility)
         {
+            _emailUtility = emailUtility;
         }
 
         public AccountController(ApplicationUserManager userManager,
-            ISecureDataFormat<AuthenticationTicket> accessTokenFormat)
+            ISecureDataFormat<AuthenticationTicket> accessTokenFormat
+            , IEmailUtility emailUtility)
         {
             UserManager = userManager;
             AccessTokenFormat = accessTokenFormat;
+            _emailUtility = emailUtility;
         }
 
         public ApplicationUserManager UserManager
@@ -152,6 +159,85 @@ namespace MadUnderGrads.API.Controllers
 
             return Ok();
         }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [Route("ForgotPassword")]
+        public async Task<IHttpActionResult> ForgotPassword(ForgotPasswordDataModel model)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            ApplicationUser user = await GetApplicationUserAsync(model.Email, model.UserName);
+            if (user == null)
+            {
+                ModelState.AddModelError("UserName", "User not found");
+                return BadRequest(ModelState);
+            }
+
+            // Generate reset code
+            string code = UserManager.GeneratePasswordResetToken(user.Id);
+
+            // Generate link;
+            string url = $"{ConfigurationManager.AppSettings["ForgotPasswordLink"]}?email={user.Email}&code={code}";
+
+            string tempate = System.IO.File.ReadAllText(
+                System.Web.HttpContext.Current.Request.MapPath("~/Templates/ForgotPasswordTemplate.html"));
+            tempate = tempate.Replace("@@Code@@", url);
+
+            // Send reset password link
+            var isResetLinkSent = _emailUtility.SendMail(user.Email, ConfigurationManager.AppSettings["ForgotPasswordSubject"], tempate);
+            if (isResetLinkSent)
+                return Ok();
+            return InternalServerError();
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [Route("ResetPassword")]
+        public async Task<IHttpActionResult> ResetPassword(ResetPasswordDataModel model)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var user = await GetApplicationUserAsync(model.Email, null);
+            if (user == null)
+                return NotFound();
+
+            var result = await UserManager.ResetPasswordAsync(user.Id, model.Code, model.Password);
+            if (!result.Succeeded)
+            {
+                return GetErrorResult(result);
+            }
+            return Ok();
+        }
+
+        private ApplicationUser GetApplicationUser(string email, string userName)
+        {
+            if (!string.IsNullOrEmpty(email))
+            {
+                return UserManager.FindByEmail(email);
+            }
+            if (!string.IsNullOrEmpty(userName))
+            {
+                return UserManager.FindByName(userName);
+            }
+            return null;
+        }
+
+        private Task<ApplicationUser> GetApplicationUserAsync(string email, string userName)
+        {
+            if (!string.IsNullOrEmpty(email))
+            {
+                return UserManager.FindByEmailAsync(email);
+            }
+            if (!string.IsNullOrEmpty(userName))
+            {
+                return UserManager.FindByNameAsync(userName);
+            }
+            return null;
+        }
+
 
         // POST api/Account/AddExternalLogin
         [Route("AddExternalLogin")]
@@ -332,7 +418,7 @@ namespace MadUnderGrads.API.Controllers
             {
                 UserName = model.UserName,
                 Email = model.Email,
-                FirstName = model.Email,
+                FirstName = model.FirstName,
                 LastName = model.LastName,
                 DateOfBirth = model.DateOfBirth
             };
@@ -344,8 +430,39 @@ namespace MadUnderGrads.API.Controllers
                 return GetErrorResult(result);
             }
 
+            string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+            // Generate link;
+            string url = $"{ConfigurationManager.AppSettings["ConfirmRegisterLink"]}?email={user.Email}&code={code}";
+
+            string tempate = System.IO.File.ReadAllText(
+                System.Web.HttpContext.Current.Request.MapPath("~/Templates/RegistrationTemplate.html"));
+            tempate = tempate.Replace("@@Code@@", url);
+
+            // Send reset password link
+            var isResetLinkSent = _emailUtility.SendMail(user.Email, ConfigurationManager.AppSettings["ConfirmRegisterSubject"], tempate);
+
             return Ok();
         }
+
+        [AllowAnonymous]
+        [Route("ConfirmEmail")]
+        [HttpPost]
+        public async Task<IHttpActionResult> ConfirmEmail(ConfirmEmailDataModel model)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var user = await GetApplicationUserAsync(model.Email, null);
+            if (user == null)
+                return NotFound();
+
+            var result = await UserManager.ConfirmEmailAsync(user.Id, model.Code);
+            if (!result.Succeeded)
+                return GetErrorResult(result);
+
+            return Ok();
+        }
+
 
         // POST api/Account/RegisterExternal
         [OverrideAuthentication]
@@ -364,7 +481,14 @@ namespace MadUnderGrads.API.Controllers
                 return InternalServerError();
             }
 
-            var user = new ApplicationUser() { UserName = model.Email, Email = model.Email };
+            var user = new ApplicationUser()
+            {
+                UserName = model.Email,
+                Email = model.Email,
+                FirstName = model.FirstName,
+                LastName = model.LastName,
+                DateOfBirth = model.DateOfBirth
+            };
 
             IdentityResult result = await UserManager.CreateAsync(user);
             if (!result.Succeeded)

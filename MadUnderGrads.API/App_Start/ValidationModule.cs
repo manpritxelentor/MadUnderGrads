@@ -20,6 +20,18 @@ namespace MadUnderGrads.API.App_Start
             builder.RegisterType<TeacherReviewValidator>()
                 .Keyed<IValidator>(typeof(IValidator<TeacherReviewDataModel>))
                 .As<IValidator>();
+
+            builder.RegisterType<ForgotPasswordDataModelValidator>()
+                .Keyed<IValidator>(typeof(IValidator<ForgotPasswordDataModel>))
+                .As<IValidator>();
+
+            builder.RegisterType<ResetPasswordDataModelValidator>()
+                .Keyed<IValidator>(typeof(IValidator<ResetPasswordDataModel>))
+                .As<IValidator>();
+
+            builder.RegisterType<ConfirmEmailDataModelValidator>()
+                .Keyed<IValidator>(typeof(IValidator<ConfirmEmailDataModel>))
+                .As<IValidator>();
             
         }
     }

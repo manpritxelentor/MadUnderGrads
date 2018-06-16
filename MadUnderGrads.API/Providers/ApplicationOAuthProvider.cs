@@ -38,6 +38,11 @@ namespace MadUnderGrads.API.Providers
                 context.SetError("invalid_grant", "The user name or password is incorrect.");
                 return;
             }
+            if(!user.EmailConfirmed)
+            {
+                context.SetError("email_confirmation", "You have not verified your email account.");
+                return;
+            }
 
             ClaimsIdentity oAuthIdentity = await user.GenerateUserIdentityAsync(userManager,
                OAuthDefaults.AuthenticationType);

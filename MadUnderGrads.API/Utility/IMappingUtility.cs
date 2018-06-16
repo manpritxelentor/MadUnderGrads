@@ -42,6 +42,8 @@ namespace MadUnderGrads.API.Utility
         TDestination Map<TSource, TDestination>(TSource source, TDestination destination)
             where TSource : class
             where TDestination : class;
+
+        object Map(object source, Type sourceType, Type destinationType);
     }
 
     public class MappingUtility : IMappingUtility
@@ -51,6 +53,11 @@ namespace MadUnderGrads.API.Utility
             where TDestination : class
         {
             return Mapper.Map<TSource, TDestination>(source);
+        }
+
+        public object Map(object source, Type sourceType, Type destinationType)
+        {
+            return Mapper.Map(source, sourceType, destinationType);
         }
 
         public TDestination Map<TSource, TDestination>(TSource source, TDestination destination)

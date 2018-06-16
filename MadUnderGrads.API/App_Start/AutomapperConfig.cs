@@ -13,17 +13,24 @@ namespace MadUnderGrads.API.App_Start
         {
             AutoMapper.Mapper.Initialize(cfg =>
             {
-                cfg.CreateMap<ProductTextbookModel, ProductTextBookDataModel>()
-                    .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.ProductId))
-                    .ForMember(dest => dest.CategoryId, opt => opt.MapFrom(src => src.Product.CategoryId))
-                    .ForMember(dest => dest.Condition, opt => opt.MapFrom(src => src.Product.Condition))
-                    .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Product.Description))
-                    .ForMember(dest => dest.IsNegotiable, opt => opt.MapFrom(src => src.Product.IsNegotiable))
-                    .ForMember(dest => dest.Price, opt => opt.MapFrom(src => src.Product.Price))
-                    .ForMember(dest => dest.IsSold, opt => opt.MapFrom(src => src.Product.IsSold))
-                    .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Product.Email))
-                    .ForMember(dest => dest.PhoneNumber, opt => opt.MapFrom(src => src.Product.PhoneNumber))
-                    .ForMember(dest => dest.UserDto, opt => opt.MapFrom(src => src.Product.Creator))
+                //cfg.CreateMap<ProductTextbookModel, ProductTextBookDataModel>()
+                //    .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.ProductId))
+                //    .ForMember(dest => dest.CategoryId, opt => opt.MapFrom(src => src.Product.CategoryId))
+                //    .ForMember(dest => dest.Condition, opt => opt.MapFrom(src => src.Product.Condition))
+                //    .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Product.Description))
+                //    .ForMember(dest => dest.IsNegotiable, opt => opt.MapFrom(src => src.Product.IsNegotiable))
+                //    .ForMember(dest => dest.Price, opt => opt.MapFrom(src => src.Product.Price))
+                //    .ForMember(dest => dest.IsSold, opt => opt.MapFrom(src => src.Product.IsSold))
+                //    .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Product.Email))
+                //    .ForMember(dest => dest.PhoneNumber, opt => opt.MapFrom(src => src.Product.PhoneNumber))
+                //    .ForMember(dest => dest.UserDto, opt => opt.MapFrom(src => src.Product.Creator))
+                //    ;
+
+                cfg.CreateMap<ProductModel, ProductTextBookDataModel>()
+                    .ForMember(dest => dest.ISBN, opt => opt.MapFrom(src => src.ProductTextbooks.ISBN))
+                    .ForMember(dest => dest.NotesIncluded, opt => opt.MapFrom(src => src.ProductTextbooks.NotesIncluded))
+                    .ForMember(dest => dest.Title, opt => opt.MapFrom(src => src.ProductTextbooks.Title))
+                    .ForMember(dest => dest.UserDto, opt => opt.MapFrom(src => src.Creator))
                     ;
 
                 cfg.CreateMap<ApplicationUser, UserDataModel>();

@@ -65,6 +65,11 @@ namespace MadUnderGrads.API.App_Start
                 .As<IIdentityHelper>()
                 .InstancePerLifetimeScope();
 
+            builder.RegisterType<EmailUtility>()
+                .As<IEmailUtility>()
+                .InstancePerLifetimeScope();
+
+
             //Validation module registration
             builder.RegisterModule(new ValidationModule());
 

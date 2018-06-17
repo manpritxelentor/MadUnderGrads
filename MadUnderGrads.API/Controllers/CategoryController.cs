@@ -9,6 +9,7 @@ using System.Web.Http;
 
 namespace MadUnderGrads.API.Controllers
 {
+    [RoutePrefix("api/Category")]
     public class CategoryController : BaseApiController
     {
         private readonly ICategoryService categoryService;
@@ -18,9 +19,21 @@ namespace MadUnderGrads.API.Controllers
             this.categoryService = categoryService;
         }
 
+        [HttpGet]
+        [Route("Get")]
         public IHttpActionResult Get()
         {
             var data = categoryService.GetAll();
+            if (data == null)
+                return NotFound();
+            return Ok(data);
+        }
+
+        [HttpGet]
+        [Route("Get/{categoryCode}")]
+        public IHttpActionResult Get(string categoryCode)
+        {
+            var data = categoryService.GetByCode(categoryCode);
             if (data == null)
                 return NotFound();
             return Ok(data);

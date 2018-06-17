@@ -9,6 +9,7 @@ namespace MadUnderGrads.API.Repository
     public interface ICategoryRepository : IGenericRepository<CategoryModel>
     {
         bool IsCategoryPresent(int categoryId);
+        CategoryModel GetByCode(string categoryCode);
     }
 
     public class CategoryRepository : EfGenericRepository<CategoryModel>, ICategoryRepository
@@ -16,6 +17,12 @@ namespace MadUnderGrads.API.Repository
         public CategoryRepository(IDataContext dataContext) 
             : base(dataContext)
         {
+        }
+
+        public CategoryModel GetByCode(string categoryCode)
+        {
+            return GetAllNoTracking()
+                .FirstOrDefault(w => w.Code == categoryCode);
         }
 
         public bool IsCategoryPresent(int categoryId)

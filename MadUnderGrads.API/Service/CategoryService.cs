@@ -13,6 +13,7 @@ namespace MadUnderGrads.API.Service
     {
         bool IsCategoryPresent(int id);
         IEnumerable<CategoryDataModel> GetAll();
+        CategoryDataModel GetByCode(string categoryCode);
     }
 
     public class CategoryService : ICategoryService
@@ -32,6 +33,14 @@ namespace MadUnderGrads.API.Service
             return mappingUtility.Project<CategoryModel, CategoryDataModel>
                 (categoryRepository.GetAllNoTracking())
                 .ToList();
+        }
+
+        public CategoryDataModel GetByCode(string categoryCode)
+        {
+            CategoryModel categoryModel = categoryRepository.GetByCode(categoryCode);
+            if (categoryModel == null)
+                return null;
+            return mappingUtility.Map<CategoryModel, CategoryDataModel>(categoryModel);
         }
 
         public bool IsCategoryPresent(int id)

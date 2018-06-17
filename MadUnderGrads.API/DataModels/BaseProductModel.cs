@@ -7,6 +7,10 @@ namespace MadUnderGrads.API.DataModels
 {
     public class BaseProductModel : IBaseModel
     {
+        public BaseProductModel()
+        {
+            Pictures = new List<PictureDataModel>();
+        }
         public int Id { get; set; }
         public int CategoryId { get; set; }
         public string Description { get; set; }
@@ -17,6 +21,7 @@ namespace MadUnderGrads.API.DataModels
         public string Email { get; set; }
         public string PhoneNumber { get; set; }
         public UserDataModel UserDto { get; set; }
-    
+
+        public List<PictureDataModel> Pictures { get; set; }
     }
 }

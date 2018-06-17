@@ -231,6 +231,7 @@
     <Compile Include="DataModels\CategoryDataModel.cs" />
     <Compile Include="DataModels\ConfirmEmailDataModel.cs" />
     <Compile Include="DataModels\ForgotPasswordDataModel.cs" />
+    <Compile Include="DataModels\PictureDataModel.cs" />
     <Compile Include="DataModels\ProductApparelDataModel.cs" />
     <Compile Include="DataModels\ProductElectronicsDataModel.cs" />
     <Compile Include="DataModels\ProductFurnitureDataModel.cs" />
@@ -310,6 +311,7 @@
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Templates\ForgotPasswordTemplate.html" />
     <Content Include="Templates\RegistrationTemplate.html" />
+    <None Include="UploadFile\dummy.txt" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -320,7 +322,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="UploadFile\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

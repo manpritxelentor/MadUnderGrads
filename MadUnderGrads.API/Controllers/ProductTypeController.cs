@@ -7,7 +7,8 @@ using System.Web.Http;
 
 namespace MadUnderGrads.API.Controllers
 {
-    public class ProductTypeController : ApiController
+    public class ProductTypeController : BaseApiController
     {
+
     }
 }

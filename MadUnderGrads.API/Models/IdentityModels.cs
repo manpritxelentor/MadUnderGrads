@@ -80,8 +80,6 @@ namespace MadUnderGrads.API.Models
             base.OnModelCreating(modelBuilder);
         }
 
-        public DbSet<CategoryModel> Categories { get; set; }
-
         public IQueryable<T> Entities<T>() where T : IBaseEntity
         {
             return Set<T>();
@@ -114,19 +112,6 @@ namespace MadUnderGrads.API.Models
 
         public T GetById<T>(object id) where T : IBaseEntity => Set<T>().Find(id);
     }
-
-    public class SampleDataInitializer : CreateDatabaseIfNotExists<ApplicationDbContext>
-    {
-        protected override void Seed(ApplicationDbContext context)
-        {
-            context.Categories.Add(new CategoryModel
-            {
-                Id = 1,
-                Name = "Textbooks"
-            });
-        }
-    }
-
 
 
     public static class EFExtensions

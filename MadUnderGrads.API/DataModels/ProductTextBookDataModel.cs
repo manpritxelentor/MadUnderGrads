@@ -13,4 +13,5 @@ namespace MadUnderGrads.API.DataModels
         public string Title { get; set; }
         public bool NotesIncluded { get; set; }
     }
+                    
 }

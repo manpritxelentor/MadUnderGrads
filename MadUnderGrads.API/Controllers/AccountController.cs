@@ -212,30 +212,25 @@ namespace MadUnderGrads.API.Controllers
             return Ok();
         }
 
-        private ApplicationUser GetApplicationUser(string email, string userName)
+        private async Task<ApplicationUser> GetApplicationUserAsync(string email, string userName)
         {
             if (!string.IsNullOrEmpty(email))
             {
-                return UserManager.FindByEmail(email);
+                var user =  await UserManager.FindByEmailAsync(email);
+                return GetActiveUser(user);
             }
             if (!string.IsNullOrEmpty(userName))
             {
-                return UserManager.FindByName(userName);
+                var user =  await UserManager.FindByNameAsync(userName);
+                return GetActiveUser(user);
             }
             return null;
         }
 
-        private Task<ApplicationUser> GetApplicationUserAsync(string email, string userName)
+        private ApplicationUser GetActiveUser(ApplicationUser user)
         {
-            if (!string.IsNullOrEmpty(email))
-            {
-                return UserManager.FindByEmailAsync(email);
-            }
-            if (!string.IsNullOrEmpty(userName))
-            {
-                return UserManager.FindByNameAsync(userName);
-            }
-            return null;
+            return user.EmailConfirmed &&
+                !user.LockoutEnabled ? user : null;
         }
 
 

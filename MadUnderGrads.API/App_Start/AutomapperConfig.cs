@@ -16,7 +16,8 @@ namespace MadUnderGrads.API.App_Start
                 // Search and My products model
                 cfg.CreateMap<ProductModel, AllProductDataModel>()
                     .ForMember(dest => dest.CategoryCode, opt => opt.MapFrom(src => src.Category.Code))
-                    .ForMember(dest => dest.UserDto, opt => opt.MapFrom(src => src.Creator));
+                    .ForMember(dest => dest.UserDto, opt => opt.MapFrom(src => src.Creator))
+                    ;
 
                 cfg.CreateMap<ProductTextbookModel, AllProductDataModel>();
 
@@ -43,6 +44,8 @@ namespace MadUnderGrads.API.App_Start
                 cfg.CreateMap<TeacherReviewDataModel, TeacherReviewModel>();
                 cfg.CreateMap<TeacherReviewModel, TeacherReviewDataModel>()
                     .ForMember(dest => dest.ReviewerDto, opt => opt.MapFrom(src => src.ReviewerUser));
+
+                cfg.CreateMap<PictureModel, PictureDataModel>();
             });
         }
     }

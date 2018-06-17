@@ -14,7 +14,7 @@ namespace MadUnderGrads.API.Service
         bool UploadPicture(int productId, List<string> pictures, string userId);
         IEnumerable<BaseProductModel> GetProducts(string categoryCode);
         BaseProductModel GetById(int productId);
-        IEnumerable<BaseProductModel> GetMyProducts(string categoryCode, string userId);
+        IEnumerable<AllProductDataModel> GetMyProducts(string categoryCode, string userId);
         bool SellProduct(int productId, string userId);
         bool Delete(int productId);
         BaseProductModel Insert(BaseProductModel model, string userId);
@@ -50,10 +50,28 @@ namespace MadUnderGrads.API.Service
             return MapProductToDto(categoryCode, data);
         }
 
-        public IEnumerable<BaseProductModel> GetMyProducts(string categoryCode, string userId)
+        public IEnumerable<AllProductDataModel> GetMyProducts(string categoryCode, string userId)
         {
-            var data = productRepository.GetByUserAndCategory(categoryCode, userId);
-            return MapProductToDto(categoryCode, data);
+            var productData = productRepository.GetByUserAndCategory(categoryCode, userId).ToList();
+            if (productData == null || !productData.Any())
+                return null;
+            var data =  productData.Select(s =>
+            {
+                var productMap = mappingUtility.Map<ProductModel, AllProductDataModel>(s);
+                productMap = MapProductChildCategory(productMap.CategoryCode, s, productMap);
+                return productMap;
+            }).ToList();
+            return data;
+        }
+
+        private AllProductDataModel MapProductChildCategory(string categoryCode, ProductModel s, AllProductDataModel productMap)
+        {
+            switch(categoryCode)
+            {
+                case Constants.Category.TextBooks:
+                    return mappingUtility.Map<ProductTextbookModel, AllProductDataModel>(s.ProductTextbooks, productMap);
+            }
+            return productMap;
         }
 
         public BaseProductModel GetById(int productId)

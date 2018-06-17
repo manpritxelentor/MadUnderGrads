@@ -221,10 +221,11 @@
     <Compile Include="Controllers\BaseApiController.cs" />
     <Compile Include="Controllers\CategoryController.cs" />
     <Compile Include="Controllers\ProductController.cs" />
-    <Compile Include="Controllers\ProductTextbookController.cs" />
+    <Compile Include="Controllers\ProductTypeController.cs" />
     <Compile Include="Controllers\SchoolController.cs" />
     <Compile Include="Controllers\TeacherController.cs" />
     <Compile Include="Controllers\TeacherReviewController.cs" />
+    <Compile Include="DataModels\AllProductDataModel.cs" />
     <Compile Include="DataModels\BaseModel.cs" />
     <Compile Include="DataModels\BaseProductModel.cs" />
     <Compile Include="DataModels\CategoryDataModel.cs" />
@@ -248,7 +249,6 @@
     <Compile Include="DataModels\Validator\TeacherReviewValidator.cs" />
     <Compile Include="DataModels\Validator\UpdateProfileDataModelValidator.cs" />
     <Compile Include="Filters\GlobalExceptionLogger.cs" />
-    <Compile Include="Filters\ProductModelBinder.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -320,6 +320,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="UploadFile\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

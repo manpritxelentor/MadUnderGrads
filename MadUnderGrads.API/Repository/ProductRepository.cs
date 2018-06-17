@@ -37,8 +37,10 @@ namespace MadUnderGrads.API.Repository
 
         public IQueryable<ProductModel> GetByUserAndCategory(string categoryCode, string userId)
         {
+            if(string.IsNullOrEmpty(categoryCode))
+                categoryCode = null;
             return GetAllNoTracking()
-                .Where(w => w.Category.Code == categoryCode
+                .Where(w => (categoryCode == null || w.Category.Code == categoryCode)
                 && w.CreatedBy == userId);
         }
     }

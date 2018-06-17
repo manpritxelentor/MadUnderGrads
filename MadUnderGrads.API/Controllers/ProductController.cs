@@ -46,10 +46,11 @@ namespace MadUnderGrads.API.Controllers
             return Ok(baseProductModel);
         }
 
-        [Route("GetMyProducts/{categoryCode}")]
-        public IHttpActionResult GetMyProducts(string categoryCode)
+        [Route("GetMyProducts/{categoryCode?}")]
+        [AllowAnonymous]
+        public IHttpActionResult GetMyProducts(string categoryCode = null)
         {
-            IEnumerable<BaseProductModel> baseProductModels = productService.GetMyProducts(categoryCode, identityHelper.UserId);
+            var baseProductModels = productService.GetMyProducts(categoryCode, identityHelper.UserId);
             if (baseProductModels == null)
                 return NotFound();
             return Ok(baseProductModels);
@@ -102,7 +103,8 @@ namespace MadUnderGrads.API.Controllers
             var httpRequest = HttpContext.Current.Request;
             if (httpRequest.Files.Count > 0)
             {
-                var serverPath = "~/UploadFile/";
+                var folderName = "UploadFile/";
+                var serverPath = $"~/{folderName}";
                 var path = HttpContext.Current.Server.MapPath(serverPath);
                 Directory.CreateDirectory(path);
                 List<string> pictures = new List<string>();
@@ -113,7 +115,7 @@ namespace MadUnderGrads.API.Controllers
                     var filePath = Path.Combine(path,postedFile.FileName);
                     postedFile.SaveAs(filePath);
 
-                    var dbFilePath = Path.Combine(serverPath, postedFile.FileName);
+                    var dbFilePath = Path.Combine(folderName, postedFile.FileName);
                     pictures.Add(dbFilePath);
                 }
                 bool result = productService.UploadPicture(productId, pictures, identityHelper.UserId);

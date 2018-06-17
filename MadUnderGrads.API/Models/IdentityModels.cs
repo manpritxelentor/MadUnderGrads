@@ -11,6 +11,7 @@ using System.Linq;
 using System.Data.Entity.ModelConfiguration.Configuration;
 using System.Data.Entity.ModelConfiguration;
 using System.Collections.Generic;
+using log4net;
 
 namespace MadUnderGrads.API.Models
 {
@@ -55,10 +56,15 @@ namespace MadUnderGrads.API.Models
             : base("DefaultConnection", throwIfV1Schema: false)
         {
             System.Data.Entity.Database.SetInitializer<ApplicationDbContext>(null);
+            ILog logger = LogManager.GetLogger("QueryAppender");
 
+            Database.Log = s =>
+            {
+                logger.Debug(s);
 #if DEBUG
-            Database.Log = s => { Trace.WriteLine(s); };
+                Trace.WriteLine(s);
 #endif
+            };
         }
 
         public static ApplicationDbContext Create()

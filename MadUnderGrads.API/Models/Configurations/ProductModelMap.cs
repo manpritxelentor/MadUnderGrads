@@ -36,8 +36,8 @@ namespace MadUnderGrads.API.Models.Configurations
                 .WithMany(w => w.Products)
                 .Map(s =>
                 {
-                    s.MapLeftKey("PictureId");
-                    s.MapRightKey("ProductId");
+                    s.MapLeftKey("ProductId");
+                    s.MapRightKey("PictureId");
                     s.ToTable("tbl_ProductPictureMap");
                 });
 

@@ -69,8 +69,6 @@ namespace MadUnderGrads.API.Controllers
             return Ok(isDeleted);
         }
 
-
-
         [HttpPost]
         [Route("UploadImage/{productId}")]
         public IHttpActionResult UploadImage(int productId)
@@ -97,6 +95,13 @@ namespace MadUnderGrads.API.Controllers
                 return Ok(result);
             }
             return BadRequest("No file found for uploading");
+        }
+
+        [HttpPost]
+        [Route("SearchProduct")]
+        public IHttpActionResult SearchProduct(ProductSearchDataModel model)
+        {
+            return Ok();
         }
 
         #region TextBook Methods

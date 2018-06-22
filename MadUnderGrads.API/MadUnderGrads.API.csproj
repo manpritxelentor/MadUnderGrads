@@ -238,6 +238,7 @@
     <Compile Include="DataModels\ProductElectronicsDataModel.cs" />
     <Compile Include="DataModels\ProductFurnitureDataModel.cs" />
     <Compile Include="DataModels\ProductMisellanousDataModel.cs" />
+    <Compile Include="DataModels\ProductSearchDataModel.cs" />
     <Compile Include="DataModels\ProductTextBookDataModel.cs" />
     <Compile Include="DataModels\ProductTypeDataModel.cs" />
     <Compile Include="DataModels\ResetPasswordDataModel.cs" />

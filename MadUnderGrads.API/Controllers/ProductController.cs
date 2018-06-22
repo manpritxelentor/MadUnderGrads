@@ -1,17 +1,10 @@
 ﻿using MadUnderGrads.API.DataModels;
-using MadUnderGrads.API.Filters;
 using MadUnderGrads.API.Service;
 using MadUnderGrads.API.Utility;
-using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
-using System.Web.Http.ModelBinding;
 
 namespace MadUnderGrads.API.Controllers
 {
@@ -76,25 +69,7 @@ namespace MadUnderGrads.API.Controllers
             return Ok(isDeleted);
         }
 
-        [HttpPost]
-        [Route("Add/TxtBks")]
-        public IHttpActionResult AddTextBook(ProductTextBookDataModel model)
-        {
-            var data = productService.Insert(model, identityHelper.UserId);
-            if (data == null)
-                return InternalServerError();
-            return Ok(data);
-        }
 
-        [HttpPost]
-        [Route("Update/TxtBks/{productId}")]
-        public IHttpActionResult UpdateTextBook(int productId, ProductTextBookDataModel model)
-        {
-            var data = productService.Update(productId, model, identityHelper.UserId);
-            if (data == null)
-                return InternalServerError();
-            return Ok(data);
-        }
 
         [HttpPost]
         [Route("UploadImage/{productId}")]
@@ -112,7 +87,7 @@ namespace MadUnderGrads.API.Controllers
                 foreach (string file in httpRequest.Files)
                 {
                     var postedFile = httpRequest.Files[file];
-                    var filePath = Path.Combine(path,postedFile.FileName);
+                    var filePath = Path.Combine(path, postedFile.FileName);
                     postedFile.SaveAs(filePath);
 
                     var dbFilePath = Path.Combine(folderName, postedFile.FileName);
@@ -124,5 +99,103 @@ namespace MadUnderGrads.API.Controllers
             return BadRequest("No file found for uploading");
         }
 
+        #region TextBook Methods
+        [HttpPost]
+        [Route("Add/" + Constants.Category.TextBooks)]
+        public IHttpActionResult AddTextBook(ProductTextBookDataModel model)
+        {
+            return AddProduct(model, Constants.Category.TextBooks);
+        }
+
+        [HttpPost]
+        [Route("Update/" + Constants.Category.TextBooks + "/{productId}")]
+        public IHttpActionResult UpdateTextBook(int productId, ProductTextBookDataModel model)
+        {
+            return UpdateProduct(productId, model, Constants.Category.TextBooks);
+        }
+
+        #endregion
+
+        #region Apparel Methods
+        [HttpPost]
+        [Route("Add/" + Constants.Category.Apparel)]
+        public IHttpActionResult AddApprarel(ProductApparelDataModel model)
+        {
+            return AddProduct(model, Constants.Category.Apparel);
+        }
+
+        [HttpPost]
+        [Route("Update/" + Constants.Category.Apparel + "/{productId}")]
+        public IHttpActionResult UpdateApprarel(int productId, ProductApparelDataModel model)
+        {
+            return UpdateProduct(productId, model, Constants.Category.Apparel);
+        }
+        #endregion
+
+        #region Electronics
+        [HttpPost]
+        [Route("Add/" + Constants.Category.Electronics)]
+        public IHttpActionResult AddElectronics(ProductElectronicsDataModel model)
+        {
+            return AddProduct(model, Constants.Category.Electronics);
+        }
+
+        [HttpPost]
+        [Route("Update/" + Constants.Category.Electronics + "/{productId}")]
+        public IHttpActionResult UpdateElectronics(int productId, ProductElectronicsDataModel model)
+        {
+            return UpdateProduct(productId, model, Constants.Category.Electronics);
+        }
+        #endregion
+
+        #region Furniture
+        [HttpPost]
+        [Route("Add/" + Constants.Category.Furniture)]
+        public IHttpActionResult AddFurniture(ProductFurnitureDataModel model)
+        {
+            return AddProduct(model, Constants.Category.Furniture);
+        }
+
+        [HttpPost]
+        [Route("Update/" + Constants.Category.Furniture + "/{productId}")]
+        public IHttpActionResult UpdateFurniture(int productId, ProductFurnitureDataModel model)
+        {
+            return UpdateProduct(productId, model, Constants.Category.Furniture);
+        }
+        #endregion
+
+        #region Miscellenous
+        [HttpPost]
+        [Route("Add/" + Constants.Category.Misellanous)]
+        public IHttpActionResult AddMisellanous(ProductMisellanousDataModel model)
+        {
+            return AddProduct(model, Constants.Category.Misellanous);
+        }
+
+        [HttpPost]
+        [Route("Update/" + Constants.Category.Misellanous + "/{productId}")]
+        public IHttpActionResult UpdateMisellanous(int productId, ProductMisellanousDataModel model)
+        {
+            return UpdateProduct(productId, model, Constants.Category.Misellanous);
+        }
+        #endregion
+
+        #region Helpers
+        private IHttpActionResult AddProduct(BaseProductModel model, string categoryCode)
+        {
+            var data = productService.Insert(model, identityHelper.UserId, categoryCode);
+            if (data == null)
+                return InternalServerError();
+            return Ok(data);
+        }
+
+        private IHttpActionResult UpdateProduct(int productId, BaseProductModel model, string categoryCode)
+        {
+            var data = productService.Update(productId, model, identityHelper.UserId, categoryCode);
+            if (data == null)
+                return InternalServerError();
+            return Ok(data);
+        }
+        #endregion
     }
 }

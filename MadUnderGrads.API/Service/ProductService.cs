@@ -17,8 +17,8 @@ namespace MadUnderGrads.API.Service
         IEnumerable<AllProductDataModel> GetMyProducts(string categoryCode, string userId);
         bool SellProduct(int productId, string userId);
         bool Delete(int productId);
-        BaseProductModel Insert(BaseProductModel model, string userId);
-        BaseProductModel Update(int id, BaseProductModel model, string userId);
+        BaseProductModel Insert(BaseProductModel model, string userId, string categoryCode);
+        BaseProductModel Update(int id, BaseProductModel model, string userId, string categoryCode);
     }
 
     public class ProductService : IProductService
@@ -28,18 +28,21 @@ namespace MadUnderGrads.API.Service
         private readonly IPictureRepository pictureRepository;
         private readonly IUnitOfWork unitOfWork;
         private readonly IMappingUtility mappingUtility;
+        private readonly ICategoryRepository categoryRepository;
         #endregion
 
         #region Constructors
         public ProductService(IProductRepository productRepository
            , IPictureRepository pictureRepository
            , IUnitOfWork unitOfWork
-           , IMappingUtility mappingUtility)
+           , IMappingUtility mappingUtility
+           , ICategoryRepository categoryRepository)
         {
             this.productRepository = productRepository;
             this.pictureRepository = pictureRepository;
             this.unitOfWork = unitOfWork;
             this.mappingUtility = mappingUtility;
+            this.categoryRepository = categoryRepository;
         }
         #endregion
 
@@ -55,24 +58,16 @@ namespace MadUnderGrads.API.Service
             var productData = productRepository.GetByUserAndCategory(categoryCode, userId).ToList();
             if (productData == null || !productData.Any())
                 return null;
-            var data =  productData.Select(s =>
-            {
-                var productMap = mappingUtility.Map<ProductModel, AllProductDataModel>(s);
-                productMap = MapProductChildCategory(productMap.CategoryCode, s, productMap);
-                return productMap;
-            }).ToList();
+            var data = productData.Select(s =>
+           {
+               var productMap = mappingUtility.Map<ProductModel, AllProductDataModel>(s);
+               productMap = MapProductChildCategory(productMap.CategoryCode, s, productMap);
+               return productMap;
+           }).ToList();
             return data;
         }
 
-        private AllProductDataModel MapProductChildCategory(string categoryCode, ProductModel s, AllProductDataModel productMap)
-        {
-            switch(categoryCode)
-            {
-                case Constants.Category.TextBooks:
-                    return mappingUtility.Map<ProductTextbookModel, AllProductDataModel>(s.ProductTextbooks, productMap);
-            }
-            return productMap;
-        }
+
 
         public BaseProductModel GetById(int productId)
         {
@@ -115,11 +110,12 @@ namespace MadUnderGrads.API.Service
             return unitOfWork.Commit() > 0;
         }
 
-        public BaseProductModel Insert(BaseProductModel model, string userId)
+        public BaseProductModel Insert(BaseProductModel model, string userId, string categoryCode)
         {
             ProductModel entity = MapDtoToProduct(model, productRepository.Create());
             entity.CreatedBy = userId;
             entity.CreatedOn = DateTime.Now;
+            entity.CategoryId = categoryRepository.GetCategoryIdByCode(categoryCode);
             productRepository.Insert(entity);
             bool isSaved = unitOfWork.Commit() > 0;
             if (isSaved)
@@ -127,12 +123,13 @@ namespace MadUnderGrads.API.Service
             return null;
         }
 
-        public BaseProductModel Update(int id, BaseProductModel model, string userId)
+        public BaseProductModel Update(int id, BaseProductModel model, string userId, string categoryCode)
         {
             var entity = productRepository.GetById(id);
             MapDtoToProduct(model, entity);
             entity.UpdatedBy = userId;
             entity.UpdatedOn = DateTime.Now;
+            entity.CategoryId = categoryRepository.GetCategoryIdByCode(categoryCode);
             productRepository.Update(entity);
             bool isSaved = unitOfWork.Commit() > 0;
             if (isSaved)
@@ -148,6 +145,14 @@ namespace MadUnderGrads.API.Service
             {
                 case Constants.Category.TextBooks:
                     return mappingUtility.Map<ProductModel, ProductTextBookDataModel>(data);
+                case Constants.Category.Apparel:
+                    return mappingUtility.Map<ProductModel, ProductApparelDataModel>(data);
+                case Constants.Category.Electronics:
+                    return mappingUtility.Map<ProductModel, ProductElectronicsDataModel>(data);
+                case Constants.Category.Furniture:
+                    return mappingUtility.Map<ProductModel, ProductFurnitureDataModel>(data);
+                case Constants.Category.Misellanous:
+                    return mappingUtility.Map<ProductModel, ProductMisellanousDataModel>(data);
             }
             return null;
         }
@@ -158,8 +163,34 @@ namespace MadUnderGrads.API.Service
             {
                 case Constants.Category.TextBooks:
                     return mappingUtility.Project<ProductModel, ProductTextBookDataModel>(data).ToList();
+                case Constants.Category.Apparel:
+                    return mappingUtility.Project<ProductModel, ProductApparelDataModel>(data).ToList();
+                case Constants.Category.Electronics:
+                    return mappingUtility.Project<ProductModel, ProductElectronicsDataModel>(data).ToList();
+                case Constants.Category.Furniture:
+                    return mappingUtility.Project<ProductModel, ProductFurnitureDataModel>(data).ToList();
+                case Constants.Category.Misellanous:
+                    return mappingUtility.Project<ProductModel, ProductMisellanousDataModel>(data).ToList();
             }
             return null;
+        }
+
+        private AllProductDataModel MapProductChildCategory(string categoryCode, ProductModel s, AllProductDataModel productMap)
+        {
+            switch (categoryCode)
+            {
+                case Constants.Category.TextBooks:
+                    return mappingUtility.Map<ProductTextbookModel, AllProductDataModel>(s.ProductTextbooks, productMap);
+                case Constants.Category.Apparel:
+                    return mappingUtility.Map<ProductApparelModel, AllProductDataModel>(s.ProductApparels, productMap);
+                case Constants.Category.Electronics:
+                    return mappingUtility.Map<ProductElectronicsModel, AllProductDataModel>(s.ProductElectronics, productMap);
+                case Constants.Category.Furniture:
+                    return mappingUtility.Map<ProductFurnitureModel, AllProductDataModel>(s.ProductFurniture, productMap);
+                case Constants.Category.Misellanous:
+                    return mappingUtility.Map<ProductMisellanousModel, AllProductDataModel>(s.ProductMisellanous, productMap);
+            }
+            return productMap;
         }
 
         private ProductModel MapDtoToProduct<T>(T data, ProductModel entity)

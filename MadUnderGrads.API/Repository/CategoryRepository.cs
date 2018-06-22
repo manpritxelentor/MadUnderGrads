@@ -10,6 +10,7 @@ namespace MadUnderGrads.API.Repository
     {
         bool IsCategoryPresent(int categoryId);
         CategoryModel GetByCode(string categoryCode);
+        int GetCategoryIdByCode(string categoryCode);
     }
 
     public class CategoryRepository : EfGenericRepository<CategoryModel>, ICategoryRepository
@@ -23,6 +24,12 @@ namespace MadUnderGrads.API.Repository
         {
             return GetAllNoTracking()
                 .FirstOrDefault(w => w.Code == categoryCode);
+        }
+
+        public int GetCategoryIdByCode(string categoryCode)
+        {
+            return GetAllNoTracking().Where(w => w.Code == categoryCode)
+                .Select(w => w.Id).DefaultIfEmpty().FirstOrDefault();
         }
 
         public bool IsCategoryPresent(int categoryId)

@@ -29,6 +29,7 @@ namespace MadUnderGrads.API.Models
             CreatedProducts = new List<ProductModel>();
             UpdatedProducts = new List<ProductModel>();
             TeacherReviews = new List<TeacherReviewModel>();
+            EventUsers = new List<EventUserModel>();
         }
 
         public string FirstName { get; set; }
@@ -40,7 +41,7 @@ namespace MadUnderGrads.API.Models
         public virtual ICollection<ProductModel> CreatedProducts { get; set; }
         public virtual ICollection<ProductModel> UpdatedProducts { get; set; }
         public virtual ICollection<TeacherReviewModel> TeacherReviews { get; set; }
-
+        public virtual ICollection<EventUserModel> EventUsers { get; set; }
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager, string authenticationType)
         {
             // Note the authenticationType must match the one defined in CookieAuthenticationOptions.AuthenticationType

@@ -20,8 +20,9 @@ namespace MadUnderGrads.API.DataModels
         public bool IsSold { get; set; }
         public string Email { get; set; }
         public string PhoneNumber { get; set; }
+        public int? ProductTypeId { get; set; }
+        public virtual ProductTypeDataModel ProductType { get; set; }
         public UserDataModel UserDto { get; set; }
-
         public List<PictureDataModel> Pictures { get; set; }
     }
 }

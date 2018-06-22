@@ -10,6 +10,7 @@ namespace MadUnderGrads.API.Models
         public CategoryModel()
         {
             Products = new List<ProductModel>();
+            ProductTypes = new List<ProductTypeModel>();
         }
 
         public int Id { get; set; }
@@ -17,5 +18,6 @@ namespace MadUnderGrads.API.Models
         public string Name { get; set; }
 
         public virtual ICollection<ProductModel> Products { get; set; }
+        public virtual ICollection<ProductTypeModel> ProductTypes { get; set; }
     }
 }

@@ -41,6 +41,10 @@ namespace MadUnderGrads.API.Models.Configurations
                     s.ToTable("tbl_ProductPictureMap");
                 });
 
+            HasOptional(w => w.ProductType)
+                .WithMany(w => w.Products)
+                .HasForeignKey(w => w.ProductTypeId);
+
             ToTable("tbl_Product");
         }
     }

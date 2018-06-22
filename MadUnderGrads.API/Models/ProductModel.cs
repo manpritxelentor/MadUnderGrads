@@ -25,7 +25,7 @@ namespace MadUnderGrads.API.Models
         public DateTime? UpdatedOn { get; set; }
         public string Email { get; set; }
         public string PhoneNumber { get; set; }
-
+        public int? ProductTypeId { get; set; }
         public virtual CategoryModel Category { get; set; }
         public virtual ProductTextbookModel ProductTextbooks { get; set; }
         public virtual ProductApparelModel ProductApparels { get; set; }
@@ -37,5 +37,6 @@ namespace MadUnderGrads.API.Models
 
         public virtual ApplicationUser Creator { get; set; }
         public virtual ApplicationUser Updator { get; set; }
+        public virtual ProductTypeModel ProductType { get; set; }
     }
 }

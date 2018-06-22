@@ -37,6 +37,10 @@ namespace MadUnderGrads.API.App_Start
                 .Keyed<IValidator>(typeof(IValidator<UpdateProfileDataModel>))
                 .As<IValidator>();
 
+            builder.RegisterType<ProductTypeDataModelValidator>()
+                .Keyed<IValidator>(typeof(IValidator<ProductTypeDataModel>))
+                .As<IValidator>();
+            
         }
     }
 }

@@ -10,6 +10,7 @@ namespace MadUnderGrads.API.Models
         public PictureModel()
         {
             Products = new List<ProductModel>();
+            Events = new List<EventModel>();
         }
         public long Id { get; set; }
         public string Name { get; set; }
@@ -19,5 +20,6 @@ namespace MadUnderGrads.API.Models
         public DateTime CreatedOn { get; set; }
 
         public virtual ICollection<ProductModel> Products { get; set; }
+        public virtual ICollection<EventModel> Events { get; set; }
     }
 }

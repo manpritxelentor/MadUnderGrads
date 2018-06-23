@@ -151,7 +151,7 @@ namespace MadUnderGrads.API.Service
                     return mappingUtility.Map<ProductModel, ProductElectronicsDataModel>(data);
                 case Constants.Category.Furniture:
                     return mappingUtility.Map<ProductModel, ProductFurnitureDataModel>(data);
-                case Constants.Category.Misellanous:
+                case Constants.Category.Miscellanous:
                     return mappingUtility.Map<ProductModel, ProductMisellanousDataModel>(data);
             }
             return null;
@@ -169,7 +169,7 @@ namespace MadUnderGrads.API.Service
                     return mappingUtility.Project<ProductModel, ProductElectronicsDataModel>(data).ToList();
                 case Constants.Category.Furniture:
                     return mappingUtility.Project<ProductModel, ProductFurnitureDataModel>(data).ToList();
-                case Constants.Category.Misellanous:
+                case Constants.Category.Miscellanous:
                     return mappingUtility.Project<ProductModel, ProductMisellanousDataModel>(data).ToList();
             }
             return null;
@@ -187,7 +187,7 @@ namespace MadUnderGrads.API.Service
                     return mappingUtility.Map<ProductElectronicsModel, AllProductDataModel>(s.ProductElectronics, productMap);
                 case Constants.Category.Furniture:
                     return mappingUtility.Map<ProductFurnitureModel, AllProductDataModel>(s.ProductFurniture, productMap);
-                case Constants.Category.Misellanous:
+                case Constants.Category.Miscellanous:
                     return mappingUtility.Map<ProductMisellanousModel, AllProductDataModel>(s.ProductMisellanous, productMap);
             }
             return productMap;

@@ -171,17 +171,17 @@ namespace MadUnderGrads.API.Controllers
 
         #region Miscellenous
         [HttpPost]
-        [Route("Add/" + Constants.Category.Misellanous)]
+        [Route("Add/" + Constants.Category.Miscellanous)]
         public IHttpActionResult AddMisellanous(ProductMisellanousDataModel model)
         {
-            return AddProduct(model, Constants.Category.Misellanous);
+            return AddProduct(model, Constants.Category.Miscellanous);
         }
 
         [HttpPost]
-        [Route("Update/" + Constants.Category.Misellanous + "/{productId}")]
+        [Route("Update/" + Constants.Category.Miscellanous + "/{productId}")]
         public IHttpActionResult UpdateMisellanous(int productId, ProductMisellanousDataModel model)
         {
-            return UpdateProduct(productId, model, Constants.Category.Misellanous);
+            return UpdateProduct(productId, model, Constants.Category.Miscellanous);
         }
         #endregion
 

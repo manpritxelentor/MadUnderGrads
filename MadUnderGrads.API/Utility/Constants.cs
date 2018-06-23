@@ -9,11 +9,11 @@ namespace MadUnderGrads.API.Utility
     {
         public struct Category
         {
-            public const string TextBooks = "Textbook";
-            public const string Apparel = "Apparel";
-            public const string Electronics = "Electronics";
-            public const string Furniture = "Furniture";
-            public const string Miscellanous = "Miscellanous";
+            public const string TextBooks = "textbook";
+            public const string Apparel = "apparel";
+            public const string Electronics = "electronics";
+            public const string Furniture = "furniture";
+            public const string Miscellanous = "miscellaneous";
         }
     }
 }

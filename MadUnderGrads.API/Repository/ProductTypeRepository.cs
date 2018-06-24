@@ -20,7 +20,7 @@ namespace MadUnderGrads.API.Repository
 
         public IQueryable<ProductTypeModel> GetByCategory(string categoryCode)
         {
-            return GetAllNoTracking().Where(w => w.Category.Name == categoryCode);
+            return GetAllNoTracking().Where(w => w.Category.Code == categoryCode);
         }
     }
 }

@@ -10,6 +10,7 @@ namespace MadUnderGrads.API.DataModels
         public BaseProductModel()
         {
             Pictures = new List<PictureDataModel>();
+            DeletePictures = new List<int>();
         }
         public int Id { get; set; }
         public int CategoryId { get; set; }
@@ -21,8 +22,9 @@ namespace MadUnderGrads.API.DataModels
         public string Email { get; set; }
         public string PhoneNumber { get; set; }
         public int? ProductTypeId { get; set; }
-        public virtual ProductTypeDataModel ProductType { get; set; }
+        public string ProductTypeName { get; set; }
         public UserDataModel UserDto { get; set; }
         public List<PictureDataModel> Pictures { get; set; }
+        public List<int> DeletePictures { get; set; }
     }
 }

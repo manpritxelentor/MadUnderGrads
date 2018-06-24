@@ -23,55 +23,96 @@ namespace MadUnderGrads.API.Service
 
     public class ProductService : IProductService
     {
+        #region Private Constant Variables
+        // 0 = Category Code
+        private const string ProductCachePattern = "Product_{0}";
+
+        /// <summary>
+        /// 0 = Category Code
+        /// </summary>
+        private const string ProductCategoryCacheKey = "Cache_Category_Product_{0}";
+
+        /// <summary>
+        /// 0 = Category Code
+        /// 1 = UserId
+        /// </summary>
+        private const string MyProductCacheKey = "Cache_Product_{0}_{1}";
+        #endregion
+
         #region Private Variables
         private readonly IProductRepository productRepository;
         private readonly IPictureRepository pictureRepository;
         private readonly IUnitOfWork unitOfWork;
         private readonly IMappingUtility mappingUtility;
         private readonly ICategoryRepository categoryRepository;
+        private readonly ICacheUtility cacheUtility;
+        private readonly IProductTextBookRepository productTextBookRepository;
+        private readonly IProductElectronicsRepository productElectronicsRepository;
+        private readonly IProductFurnitureRepository productFurnitureRepository;
+        private readonly IProductApparelRepository productApparelRepository;
+        private readonly IProductMisellanousRepository productMisellanousRepository;
+        private readonly IBackgroundUtility backgroundUtility;
         #endregion
 
         #region Constructors
         public ProductService(IProductRepository productRepository
-           , IPictureRepository pictureRepository
-           , IUnitOfWork unitOfWork
-           , IMappingUtility mappingUtility
-           , ICategoryRepository categoryRepository)
+            , IPictureRepository pictureRepository
+            , IUnitOfWork unitOfWork
+            , IMappingUtility mappingUtility
+            , ICategoryRepository categoryRepository
+            , ICacheUtility cacheUtility
+            , IProductTextBookRepository productTextBookRepository
+            , IProductElectronicsRepository productElectronicsRepository
+            , IProductFurnitureRepository productFurnitureRepository
+            , IProductApparelRepository productApparelRepository
+            , IProductMisellanousRepository productMisellanousRepository
+            , IBackgroundUtility backgroundUtility)
         {
             this.productRepository = productRepository;
             this.pictureRepository = pictureRepository;
             this.unitOfWork = unitOfWork;
             this.mappingUtility = mappingUtility;
             this.categoryRepository = categoryRepository;
+            this.cacheUtility = cacheUtility;
+            this.productTextBookRepository = productTextBookRepository;
+            this.productElectronicsRepository = productElectronicsRepository;
+            this.productFurnitureRepository = productFurnitureRepository;
+            this.productApparelRepository = productApparelRepository;
+            this.productMisellanousRepository = productMisellanousRepository;
+            this.backgroundUtility = backgroundUtility;
         }
         #endregion
 
         #region Public Methods
         public IEnumerable<BaseProductModel> GetProducts(string categoryCode)
         {
-            var data = productRepository.GetbyCategory(categoryCode);
-            return MapProductToDto(categoryCode, data);
+            return cacheUtility.Get<IEnumerable<BaseProductModel>>(string.Format(ProductCategoryCacheKey, categoryCode), () =>
+            {
+                var data = productRepository.GetbyCategory(categoryCode);
+                return MapProductToDto(categoryCode, data);
+            });
         }
 
         public IEnumerable<AllProductDataModel> GetMyProducts(string categoryCode, string userId)
         {
-            var productData = productRepository.GetByUserAndCategory(categoryCode, userId).ToList();
-            if (productData == null || !productData.Any())
-                return null;
-            var data = productData.Select(s =>
-           {
-               var productMap = mappingUtility.Map<ProductModel, AllProductDataModel>(s);
-               productMap = MapProductChildCategory(productMap.CategoryCode, s, productMap);
-               return productMap;
-           }).ToList();
-            return data;
+            return cacheUtility.Get<IEnumerable<AllProductDataModel>>(string.Format(MyProductCacheKey, categoryCode, userId), () =>
+            {
+                var productData = productRepository.GetByUserAndCategory(categoryCode, userId).ToList();
+                if (productData == null || !productData.Any())
+                    return null;
+                var data = productData.Select(s =>
+                {
+                    var productMap = mappingUtility.Map<ProductModel, AllProductDataModel>(s);
+                    productMap = MapProductChildCategory(productMap.CategoryCode, s, productMap);
+                    return productMap;
+                }).ToList();
+                return data;
+            });
         }
-
-
 
         public BaseProductModel GetById(int productId)
         {
-            var data = productRepository.GetById(productId);
+            var data = productRepository.GetByIdNoTracking(productId);
             if (data == null)
                 return null;
             return MapProductToDto(data.Category.Code, data);
@@ -88,6 +129,7 @@ namespace MadUnderGrads.API.Service
             data.UpdatedBy = userId;
             data.UpdatedOn = DateTime.Now;
             productRepository.Update(data);
+            cacheUtility.RemoveByPattern(string.Format(ProductCachePattern, data.Category.Code));
             return unitOfWork.Commit() > 0;
         }
 
@@ -100,15 +142,11 @@ namespace MadUnderGrads.API.Service
             data.IsSold = true;
             data.UpdatedBy = userId;
             data.UpdatedOn = DateTime.Now;
-
+            cacheUtility.RemoveByPattern(string.Format(ProductCachePattern, data.Category.Code));
             return unitOfWork.Commit() > 0;
         }
 
-        public bool Delete(int productId)
-        {
-            productRepository.DeleteById(productId);
-            return unitOfWork.Commit() > 0;
-        }
+
 
         public BaseProductModel Insert(BaseProductModel model, string userId, string categoryCode)
         {
@@ -119,7 +157,10 @@ namespace MadUnderGrads.API.Service
             productRepository.Insert(entity);
             bool isSaved = unitOfWork.Commit() > 0;
             if (isSaved)
+            {
+                cacheUtility.RemoveByPattern(string.Format(ProductCachePattern, categoryCode));
                 return GetById(entity.Id);
+            }
             return null;
         }
 
@@ -130,11 +171,62 @@ namespace MadUnderGrads.API.Service
             entity.UpdatedBy = userId;
             entity.UpdatedOn = DateTime.Now;
             entity.CategoryId = categoryRepository.GetCategoryIdByCode(categoryCode);
+            foreach (var item in model.DeletePictures)
+            {
+                var picture = pictureRepository.GetById(item);
+                if (picture == null)
+                    continue;
+
+                backgroundUtility.DeleteFile(HttpContext.Current.Server.MapPath(picture.Path));
+                pictureRepository.Delete(picture);
+            }
+
             productRepository.Update(entity);
             bool isSaved = unitOfWork.Commit() > 0;
             if (isSaved)
+            {
+                cacheUtility.RemoveByPattern(string.Format(ProductCachePattern, categoryCode));
                 return GetById(entity.Id);
+            }
             return null;
+        }
+
+        public bool Delete(int productId)
+        {
+            var data = productRepository.GetById(productId);
+            if (data == null)
+                return false;
+            string categoryCode = data.Category.Code;
+            switch (data.Category.Code)
+            {
+                case Constants.Category.TextBooks:
+                    productTextBookRepository.DeleteById(productId);
+                    break;
+                case Constants.Category.Apparel:
+                    productApparelRepository.DeleteById(productId);
+                    break;
+                case Constants.Category.Electronics:
+                    productElectronicsRepository.DeleteById(productId);
+                    break;
+                case Constants.Category.Furniture:
+                    productFurnitureRepository.DeleteById(productId);
+                    break;
+                case Constants.Category.Miscellanous:
+                    productMisellanousRepository.DeleteById(productId);
+                    break;
+            }
+            var productPictures = data.Pictures.ToList();
+            foreach (var picture in productPictures)
+            {
+                backgroundUtility.DeleteFile(HttpContext.Current.Server.MapPath(picture.Path));
+                pictureRepository.Delete(picture);
+            }
+
+            productRepository.Delete(data);
+            var isDeleted = unitOfWork.Commit() > 0;
+            if (isDeleted)
+                cacheUtility.RemoveByPattern(string.Format(ProductCachePattern, categoryCode));
+            return isDeleted;
         }
         #endregion
 

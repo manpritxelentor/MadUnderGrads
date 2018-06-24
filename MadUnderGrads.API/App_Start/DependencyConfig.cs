@@ -72,7 +72,14 @@ namespace MadUnderGrads.API.App_Start
             builder.RegisterType<ConfigurationUtility>()
                 .As<IConfigurationUtility>()
                 .InstancePerLifetimeScope();
-            
+
+            builder.RegisterType<MemoryCacheUtility>()
+                .As<ICacheUtility>()
+                .InstancePerLifetimeScope();
+
+            builder.RegisterType<BackgroundUtility>()
+                .As<IBackgroundUtility>()
+                .InstancePerLifetimeScope();
 
             //Validation module registration
             builder.RegisterModule(new ValidationModule());

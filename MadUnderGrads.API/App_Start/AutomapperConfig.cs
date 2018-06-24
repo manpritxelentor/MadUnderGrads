@@ -28,6 +28,7 @@ namespace MadUnderGrads.API.App_Start
                     .ForMember(dest => dest.ISBN, opt => opt.MapFrom(src => src.ProductTextbooks.ISBN))
                     .ForMember(dest => dest.NotesIncluded, opt => opt.MapFrom(src => src.ProductTextbooks.NotesIncluded))
                     .ForMember(dest => dest.Title, opt => opt.MapFrom(src => src.ProductTextbooks.Title))
+                    .ForMember(dest => dest.ProductTypeName, opt => opt.MapFrom(src => src.ProductType.Name))
                     .ForMember(dest => dest.UserDto, opt => opt.MapFrom(src => src.Creator))
                     ;
                 cfg.CreateMap<ProductModel, ProductApparelDataModel>()
@@ -36,16 +37,20 @@ namespace MadUnderGrads.API.App_Start
                     .ForMember(dest => dest.AvailableForMen, opt => opt.MapFrom(src => src.ProductApparels.AvailableForMen))
                     .ForMember(dest => dest.AvailableForWomen, opt => opt.MapFrom(src => src.ProductApparels.AvailableForWomen))
                     .ForMember(dest => dest.UserDto, opt => opt.MapFrom(src => src.Creator))
+                    .ForMember(dest => dest.ProductTypeName, opt => opt.MapFrom(src => src.ProductType.Name))
                     ;
                 cfg.CreateMap<ProductModel, ProductElectronicsDataModel>()
                     .ForMember(dest => dest.Manufacturer, opt => opt.MapFrom(src => src.ProductElectronics.Manufacturer))
                     .ForMember(dest => dest.UserDto, opt => opt.MapFrom(src => src.Creator))
+                    .ForMember(dest => dest.ProductTypeName, opt => opt.MapFrom(src => src.ProductType.Name))
                     ;
                 cfg.CreateMap<ProductModel, ProductFurnitureDataModel>()
                     .ForMember(dest => dest.UserDto, opt => opt.MapFrom(src => src.Creator))
+                    .ForMember(dest => dest.ProductTypeName, opt => opt.MapFrom(src => src.ProductType.Name))
                     ;
                 cfg.CreateMap<ProductModel, ProductMisellanousDataModel>()
                     .ForMember(dest => dest.UserDto, opt => opt.MapFrom(src => src.Creator))
+                    .ForMember(dest => dest.ProductTypeName, opt => opt.MapFrom(src => src.ProductType.Name))
                     ;
 
                 cfg.CreateMap<ApplicationUser, UserDataModel>();

@@ -15,6 +15,7 @@ namespace MadUnderGrads.API.Repository
         /// <returns></returns>
         IQueryable<ProductModel> GetbyCategory(string categoryCode);
         IQueryable<ProductModel> GetByUserAndCategory(string categoryCode, string userId);
+        ProductModel GetByIdNoTracking(int id);
     }
 
     public class ProductRepository : EfGenericRepository<ProductModel>, IProductRepository
@@ -42,6 +43,12 @@ namespace MadUnderGrads.API.Repository
             return GetAllNoTracking()
                 .Where(w => (categoryCode == null || w.Category.Code == categoryCode)
                 && w.CreatedBy == userId);
+        }
+
+        public ProductModel GetByIdNoTracking(int id)
+        {
+            return GetAllNoTracking()
+                .FirstOrDefault(w => w.Id == id);
         }
     }
 }

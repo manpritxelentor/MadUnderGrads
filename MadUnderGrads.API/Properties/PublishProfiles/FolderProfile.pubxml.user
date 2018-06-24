@@ -103,10 +103,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>03/08/2017 19:26:22</publishTime>
     </File>
     <File Include="bin/MadUnderGrads.API.dll">
-      <publishTime>06/23/2018 17:18:32</publishTime>
+      <publishTime>06/24/2018 15:55:53</publishTime>
     </File>
     <File Include="bin/MadUnderGrads.API.pdb">
-      <publishTime>06/23/2018 17:18:32</publishTime>
+      <publishTime>06/24/2018 15:55:53</publishTime>
     </File>
     <File Include="bin/Microsoft.AspNet.Identity.Core.dll">
       <publishTime>04/03/2015 17:07:22</publishTime>
